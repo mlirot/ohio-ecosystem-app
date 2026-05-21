@@ -3,621 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ohio Ecosystem Dynamics: Food Chains, Webs, & Trophic Energy Thermodynamics</title>
+    <title>Ohio Ecosystem Dynamics: Chains, Webs, & Energy Thermodynamics</title>
     <style>
         :root {
             --bg-main: #f8fafc;
             --surface: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --primary: #7c5e43; /* Canva Earth Tone theme */
-            --primary-light: #f5efe6;
-            --primary-dark: #4a3525;
+            --primary: #166534; /* Forest Green Theme */
+            --primary-light: #f0fdf4;
+            --primary-dark: #14532d;
             --accent-red: #b91c1c;
             --accent-red-light: #fee2e2;
             --accent-amber: #d97706;
+            --accent-amber-light: #fef3c7;
             --border: #e2e8f0;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --accent-green: #385723;
-            --accent-green-light: #e2f0d9;
+            --radius: 12px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding: 24px 16px;
+            background-color: #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 16px;
         }
 
-        .container {
+        /* Fixed Presentation Slide Canvas */
+        .slide-container {
+            width: 100%;
+            max-width: 1280px;
+            min-height: 750px;
+            background-color: var(--surface);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+            display: none; 
+            padding: 40px 60px 60px 60px;
+        }
+
+        .slide-container.active { 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        h1 { font-size: 28pt; color: var(--primary-dark); margin-bottom: 6px; font-weight: 800; }
+        h2 { font-size: 20pt; color: var(--primary-dark); margin-bottom: 12px; border-left: 6px solid var(--primary); padding-left: 14px; font-weight: 700; }
+        p { font-size: 12pt; color: var(--text-main); margin-bottom: 16px; }
+        .instructions { font-size: 11pt; color: var(--text-muted); font-style: italic; margin-bottom: 20px; }
+
+        /* Progress Visual Indicator Tracker */
+        .progress-nav {
+            position: absolute;
+            bottom: 24px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            gap: 8px;
+        }
+        .nav-bar { flex: 1; height: 6px; background: #e2e8f0; border-radius: 3px; }
+        .nav-bar.active { background: var(--primary); }
+        .nav-bar.completed { background: var(--primary-dark); }
+
+        /* Part 1: Slide Deck Frame */
+        .gallery-frame {
+            flex-grow: 1;
+            background: #1e293b;
+            border-radius: var(--radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            overflow: hidden;
+            border: 4px solid #334155;
+            min-height: 480px;
+        }
+        .gallery-img { max-width: 100%; max-height: 480px; object-fit: contain; }
+        
+        .controls { display: flex; justify-content: center; gap: 16px; align-items: center; margin-top: auto; }
+        .btn { padding: 12px 28px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; font-size: 11pt; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-ghost { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: #e2e8f0; }
+
+        /* Part 2: High-Visibility Interactive Sandbox */
+        .sandbox-wrapper {
+            position: relative;
+            width: 100%;
             max-width: 1000px;
             margin: 0 auto;
-            background: var(--surface);
-            padding: 32px;
-            border-radius: var(--radius-lg);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: #fff;
         }
-
-        header {
-            margin-bottom: 24px;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 16px;
-        }
-
-        h1 { color: var(--primary-dark); font-size: 24pt; font-weight: 700; margin-bottom: 4px; }
-        p.subtitle { color: var(--text-muted); font-size: 11pt; }
-
-        .tracker {
-            display: table; width: 100%; table-layout: fixed; margin-bottom: 32px; border-collapse: separate; border-spacing: 4px;
-        }
-        .tracker-step { display: table-cell; background: var(--border); height: 8px; border-radius: 4px; }
-        .tracker-step.active { background: var(--primary); }
-        .tracker-step.completed { background: var(--primary-dark); }
-
-        .app-section { display: none; }
-        .app-section.active { display: block; }
-        h2 { font-size: 16pt; color: var(--primary-dark); margin-bottom: 12px; border-left: 5px solid var(--primary); padding-left: 12px; }
-        .instructions { color: var(--text-muted); font-size: 10.5pt; margin-bottom: 20px; }
-
-        .slide-gallery { background: #1e1e1e; border-radius: var(--radius-md); padding: 16px; text-align: center; margin-bottom: 20px; }
-        .slide-frame { max-width: 100%; height: auto; max-height: 480px; border-radius: 4px; display: block; margin: 0 auto; }
-        .slide-controls { margin-top: 16px; }
-        .gallery-btn { background: #4a4a4a; color: #fff; border: none; padding: 8px 16px; font-size: 10pt; border-radius: 4px; cursor: pointer; margin: 0 8px; font-weight: 600; }
-        .gallery-btn:hover { background: #626262; }
-        .slide-counter { color: #aaa; font-size: 10pt; font-family: monospace; display: inline-block; min-width: 80px; }
-
-        /* HIGH-VISIBILITY MAPPING INTERFACE FRAMEWORK */
-        .sandbox-wrapper { position: relative; width: 100%; max-width: 900px; margin: 0 auto 24px auto; border: 2px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: #fff; }
         .sandbox-bg { display: block; width: 100%; height: auto; }
 
-        /* Made boxes tinted and outlined by default for high student visibility */
-        .node-target { 
-            position: absolute; 
-            cursor: pointer; 
-            border-radius: 8px; 
-            background: rgba(124, 94, 67, 0.12); 
-            border: 2px dashed rgba(124, 94, 67, 0.6); 
-            transform: translate(-50%, -50%); 
-            transition: all 0.2s; 
+        .hotspot {
+            position: absolute;
+            border: 2px dashed rgba(22, 101, 52, 0.65);
+            background: rgba(22, 101, 52, 0.12);
+            border-radius: 8px;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s;
         }
-        .node-target:hover { 
-            background: rgba(124, 94, 67, 0.25); 
+        .hotspot:hover { 
+            background: rgba(22, 101, 52, 0.25); 
             border-color: var(--primary-dark); 
             border-style: solid;
-            box-shadow: 0 0 12px rgba(124, 94, 67, 0.5); 
+            box-shadow: 0 0 12px rgba(22, 101, 52, 0.5); 
         }
+        .hotspot.dead { background: rgba(153, 27, 27, 0.3) !important; border-color: var(--accent-red) !important; border-style: solid !important; }
+        .hotspot.dead::after { content: "❌"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 22pt; pointer-events: none; }
+        .hotspot.affected { background: rgba(146, 64, 14, 0.25) !important; border-color: var(--accent-amber) !important; border-style: dotted !important; }
+        .hotspot.affected::after { content: "⚠️"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18pt; pointer-events: none; animation: bob 1s infinite alternate; }
+
+        @keyframes bob { 0% { transform: translate(-50%, -40%); } 100% { transform: translate(-50%, -60%); } }
+
+        .log-box {
+            background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 10.5pt;
+            margin-top: 16px; min-height: 80px; border-left: 5px solid var(--primary); line-height: 1.4;
+        }
+
+        /* Part 3: Thermodynamic Rule Split Layout */
+        .energy-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; margin-top: 12px; }
+        .energy-visual { background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+        .energy-visual img { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .node-target.dead { background: rgba(185, 28, 28, 0.2) !important; border-color: var(--accent-red) !important; border-style: solid !important; }
-        .node-target.dead::after { content: "❌"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 26pt; pointer-events: none; z-index: 10; }
-        
-        .node-target.affected { background: rgba(217, 119, 6, 0.2) !important; border-color: var(--accent-amber) !important; border-style: dashed !important; }
-        .node-target.affected::after { content: "⚠️"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20pt; pointer-events: none; z-index: 9; animation: bounce 1s infinite alternate; }
+        .tier-deck { display: flex; flex-direction: column; gap: 10px; }
+        .tier-card { 
+            padding: 16px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; font-weight: 700; transition: all 0.2s; background: #fff; font-size: 11pt;
+        }
+        .tier-card:hover { border-color: var(--primary); background: var(--primary-light); }
+        .tier-card.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); box-shadow: 0 0 0 1px var(--primary); }
+        .tier-badge { background: #1e293b; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 9pt; font-family: monospace; }
 
-        @keyframes bounce { 0% { transform: translate(-50%, -35%); } 100% { transform: translate(-50%, -65%); } }
+        .formula-container { background: #1e293b; color: white; padding: 20px; border-radius: 8px; margin-top: 16px; }
+        .formula-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding: 6px 0; font-family: monospace; }
 
-        /* PIXEL HOTSPOT COORDINATES (Slide 4 Map Layout) */
-        #node-cat       { width: 10%; height: 20%; top: 29%; left: 19%; }
-        #node-stinkbug  { width: 8%;  height: 14%; top: 31%; left: 34%; }
-        #node-cardinal  { width: 12%; height: 16%; top: 30%; left: 47%; }
-        #node-hawk      { width: 9%;  height: 20%; top: 30%; left: 61%; }
-        #node-fox       { width: 10%; height: 20%; top: 31%; left: 72%; }
-        #node-squirrel  { width: 10%; height: 18%; top: 56%; left: 29%; }
-        #node-larva     { width: 10%; height: 16%; top: 56%; left: 42%; }
-        #node-rabbit    { width: 11%; height: 18%; top: 60%; left: 58%; }
-        #node-bluejay   { width: 8%;  height: 16%; top: 58%; left: 66%; }
-        #node-swallowtail { width: 10%; height: 14%; top: 72%; left: 23%; }
-        #node-pawpaw    { width: 10%; height: 16%; top: 81%; left: 31%; }
-        #node-lupine    { width: 9%;  height: 18%; top: 76%; left: 43%; }
-        #node-seeds     { width: 8%;  height: 14%; top: 73%; left: 50%; }
-        #node-elderberry{ width: 10%; height: 18%; top: 80%; left: 64%; }
-        #node-decomposers { width: 14%; height: 32%; top: 62%; left: 10%; }
+        /* Assessment Quiz Blocks */
+        .quiz-block { background: #f8fafc; border: 1px solid var(--border); padding: 20px; border-radius: 8px; margin-bottom: 16px; }
+        .quiz-question-text { font-weight: 700; font-size: 12pt; margin-bottom: 12px; color: #0f172a; }
+        .quiz-option { padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; background: #fff; font-size: 11pt; }
+        .quiz-option:hover { background: #f1f5f9; border-color: var(--text-muted); }
+        .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+        .quiz-option.correct { background: #dcfce7 !important; border-color: #166534 !important; color: #14532d !important; font-weight: 700; }
+        .quiz-option.incorrect { background: #fee2e2 !important; border-color: #991b1b !important; color: #7f1d1d !important; }
 
-        /* ENERGY SIMULATOR COMPONENT STYLES */
-        .energy-split-layout { display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
-        .energy-visual-pane { flex: 1; min-width: 300px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; background: #fff; text-align: center; }
-        .energy-interactive-deck { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .energy-tier-tab { background: #f8fafc; border: 2px solid var(--border); padding: 14px; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
-        .energy-tier-tab:hover { border-color: var(--primary); background: #fdfbf7; }
-        .energy-tier-tab.selected { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
-        .energy-badge { background: var(--primary-dark); color: #fff; font-family: monospace; padding: 2px 10px; border-radius: 20px; font-size: 10pt; }
-
-        .energy-display-matrix { background: #1e293b; color: #f8fafc; border-radius: var(--radius-md); padding: 20px; margin-top: 16px; font-family: monospace; }
-        .energy-calc-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #334155; }
-
-        .dashboard-log { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: var(--radius-md); font-family: monospace; font-size: 10pt; min-height: 90px; margin-bottom: 20px; border-left: 4px solid var(--primary); }
-        .option-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; font-size: 11pt; }
-        .option-card:hover { border-color: var(--primary); background: #fdfbf7; }
-        .option-card.correct { background: var(--accent-green-light); border-color: #70ad47; color: var(--accent-green); font-weight: 600; }
-        .option-card.incorrect { background: var(--accent-red-light); border-color: var(--accent-red); color: var(--accent-red); }
-        .feedback-box { padding: 12px 16px; border-radius: var(--radius-md); margin-top: 12px; font-weight: 600; display: none; }
-
-        .action-row { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); text-align: right; }
-        .btn-action { background: var(--primary); color: #fff; border: none; padding: 12px 24px; font-size: 11pt; font-weight: 600; border-radius: var(--radius-md); cursor: pointer; transition: background 0.2s; }
-        .btn-action:hover { background: var(--primary-dark); }
-        .btn-secondary { background: #64748b; margin-right: 8px; }
-        .btn-secondary:hover { background: #475569; }
-
-        .quiz-block { background: #f8fafc; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius-md); margin-bottom: 24px; }
-        .quiz-question-text { font-weight: 600; font-size: 12pt; margin-bottom: 14px; color: #0f172a; }
-        .quiz-radio-option { display: block; padding: 10px; background: #fff; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; cursor: pointer; }
-        .quiz-radio-option:hover { background: #f1f5f9; }
-        .quiz-radio-option input { margin-right: 10px; }
-        .score-banner { background: #fdfbf7; border: 2px dashed var(--primary); border-radius: var(--radius-lg); padding: 24px; text-align: center; margin-bottom: 24px; }
-        .score-val { font-size: 36pt; font-weight: 800; color: var(--primary-dark); }
+        .score-box { background: #fff; border: 3px dashed var(--primary); padding: 32px; border-radius: var(--radius); text-align: center; margin-top: 20px; }
+        .score-num { font-size: 42pt; font-weight: 900; color: var(--primary-dark); margin: 10px 0; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
+    <div class="slide-container active" id="slide-panel-1">
         <h1>Ohio Ecosystem Dynamics</h1>
-        <p class="subtitle">Student Sandbox Module: Chains, Webs, & Trophic Energy Thermodynamics</p>
-    </header>
-
-    <div class="tracker" id="tracker-bar">
-        <div class="tracker-step active"></div>
-        <div class="tracker-step"></div>
-        <div class="tracker-step"></div>
-        <div class="tracker-step"></div>
-        <div class="tracker-step"></div>
-        <div class="tracker-step"></div>
+        <p class="instructions">Use the control dock below to navigate the core content curriculum slides (Slides 1 through 14).</p>
+        <div class="gallery-frame">
+            <img src="slide1.png" id="main-gallery" class="gallery-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1280\' height=\'720\' style=\'background:%231e293b;\'><text x=\'50%\' y=\'50%\' fill=\'%23f8fafc\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' text-anchor=\'middle\'>Slide File Loading Context Error: Confirm your image filenames match slide1.png through slide14.png exactly</text></svg>'">
+        </div>
+        <div class="controls">
+            <button class="btn btn-ghost" onclick="changeSlide(-1)">&larr; Previous Slide</button>
+            <span id="slide-count-txt" style="font-weight: 700; font-family: monospace; font-size: 12pt;">Slide 1 / 14</span>
+            <button class="btn btn-ghost" onclick="changeSlide(1)">Next Slide &rarr;</button>
+            <button class="btn btn-primary" style="margin-left: auto;" onclick="nextPanel(2)">Advance to Checkpoint &rarr;</button>
+        </div>
+        <div class="progress-nav"><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
     </div>
 
-    <div id="panel-1" class="app-section active">
-        <h2>🔬 Part 1: Unit Presentation Slides</h2>
-        <p class="instructions">Use the control deck below to review food web structures, vocabulary terms, and the 10% thermodynamic law.</p>
+    <div class="slide-container" id="slide-panel-2">
+        <h2>⚡ Midpoint Checkpoint: Interconnectivity Vectors</h2>
+        <p style="margin-top: 10px;">Review the conceptual layouts outlined across your food web presentation slides. What is the explicit real-world definition of the arrows printed inside an ecosystem mapping schematic?</p>
         
-        <div class="slide-gallery">
-            <img src="slide1.png" alt="Lesson Slides" class="slide-frame" id="gallery-canvas" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'450\' style=\'background:%231e1e1e;\'><text x=\'50%\' y=\'50%\' fill=\'%23aaa\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\'>Slide File Loading Error: Ensure your images are named slide1.png through slide14.png</text></svg>'">
-            <div class="slide-controls">
-                <button class="gallery-btn" onclick="shiftSlide(-1)">◀ Previous Slide</button>
-                <span class="slide-counter" id="gallery-idx">Slide 1 / 14</span>
-                <button class="gallery-btn" onclick="shiftSlide(1)">Next Slide ▶</button>
-            </div>
+        <div id="quiz-options-mid" style="margin-top: 20px;">
+            <div class="quiz-option" onclick="checkMid(this, false)">A) The physiological migration flight trajectories of local avian classes over seasonal intervals.</div>
+            <div class="quiz-option" onclick="checkMid(this, true)">B) The direction of chemical biomass energy transfer running from the eaten organism to the consumer.</div>
+            <div class="quiz-option" onclick="checkMid(this, false)">C) The comparative metabolic speed ratios at which secondary predators chase target prey items.</div>
         </div>
-
-        <div class="action-row">
-            <button class="btn-action" onclick="shiftSection(2)">Advance to Knowledge Check ➔</button>
-        </div>
-    </div>
-
-    <div id="panel-2" class="app-section">
-        <h2>⚡ Midpoint Checkpoint: Web Interconnectivity</h2>
-        <p class="instructions">Demonstrate an understanding of foundational web concepts before initiating structural fracture options.</p>
+        <div id="mid-feedback" style="margin-top: 20px; font-weight: 700; font-size: 13pt;"></div>
         
-        <div class="quiz-block" style="background:#fff; border:none; padding:0;">
-            <p class="quiz-question-text">Q: Look closely at Slide 4. Why does the Eastern Cottontail Rabbit have arrows pointing away from it toward BOTH the Red Fox and the Cooper's Hawk?</p>
-            
-            <div class="option-card" onclick="verifyCheckpoint(this, false)">A) It means the rabbit actively hunts the fox and hawk for energy.</div>
-            <div class="option-card" onclick="verifyCheckpoint(this, true)">B) It indicates the rabbit serves as an integrated primary energy choice for multiple predatory niche lines in the community web.</div>
-            <div class="option-card" onclick="verifyCheckpoint(this, false)">C) It proves that rabbits belong to the apex predator classification tier.</div>
-            
-            <div class="feedback-box" id="checkpoint-feedback"></div>
+        <div class="controls" style="margin-top: auto;">
+            <button class="btn btn-primary" id="btn-to-3" style="display: none; margin-left: auto;" onclick="nextPanel(3)">Unlock Ecosystem Simulator &rarr;</button>
         </div>
-
-        <div class="action-row">
-            <button class="btn-action" id="gate-to-sim" style="display:none;" onclick="shiftSection(3)">Unlock Interactive Collapse Engine ➔</button>
-        </div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
     </div>
 
-    <div id="panel-3" class="app-section">
-        <h2>🕸️ Part 2: Trophic Structural Sandbox (Web Fractures)</h2>
-        <p class="instructions">Click on any marked <strong>dashed interactive box</strong> directly on the ecosystem canvas to knock that organism out of the web.</p>
+    <div class="slide-container" id="slide-panel-3">
+        <h2>🕸️ Structural Trophic Sandbox (Web Fractures)</h2>
+        <p class="instructions">Click directly on any high-visibility dashed box to remove that organism from the web. Watch the top-down or bottom-up domino effects update instantly.</p>
         
         <div class="sandbox-wrapper">
-            <img src="slide4.png" alt="Ohio Food Web Schematic Canvas" class="sandbox-bg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'900\' height=\'500\' style=\'background:%23e2e8f0;\'><text x=\'50%\' y=\'50%\' fill=\'%23475569\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\'>[Ensure slide4.png is in your repository folder]</text></svg>'">
+            <img src="slide8.png" alt="Ecosystem Canvas Layout" class="sandbox-bg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1000\' height=\'560\' style=\'background:%23cbd5e1;\'><text x=\'50%\' y=\'50%\' fill=\'%231e293b\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'16\' text-anchor=\'middle\'>[Sandbox Background: Please confirm slide8.png is uploaded to your repository]</text></svg>'">
             
-            <div class="node-target" id="node-cat" title="Outdoor Cat" onclick="triggerCascade('cat')"></div>
-            <div class="node-target" id="node-stinkbug" title="Stinkbug" onclick="triggerCascade('stinkbug')"></div>
-            <div class="node-target" id="node-cardinal" title="Northern Cardinal" onclick="triggerCascade('cardinal')"></div>
-            <div class="node-target" id="node-hawk" title="Cooper's Hawk" onclick="triggerCascade('hawk')"></div>
-            <div class="node-target" id="node-fox" title="Red Fox" onclick="triggerCascade('fox')"></div>
+            <div class="hotspot" style="top:25%; left:18%; width:8%; height:18%;" onclick="sim('cat', this)" title="Outdoor Cat"></div>
+            <div class="hotspot" style="top:26%; left:33%; width:7%; height:14%;" onclick="sim('bug', this)" title="Stinkbug"></div>
+            <div class="hotspot" style="top:29%; left:47%; width:9%; height:16%;" onclick="sim('cardinal', this)" title="Northern Cardinal"></div>
+            <div class="hotspot" style="top:25%; left:62%; width:8%; height:18%;" onclick="sim('hawk', this)" title="Cooper's Hawk"></div>
+            <div class="hotspot" style="top:28%; left:75%; width:9%; height:18%;" onclick="sim('fox', this)" title="Red Fox"></div>
             
-            <div class="node-target" id="node-squirrel" title="Gray Squirrel" onclick="triggerCascade('squirrel')"></div>
-            <div class="node-target" id="node-larva" title="Karner Blue Caterpillar" onclick="triggerCascade('larva')"></div>
-            <div class="node-target" id="node-rabbit" title="Eastern Cottontail" onclick="triggerCascade('rabbit')"></div>
-            <div class="node-target" id="node-bluejay" title="Bluejay" onclick="triggerCascade('bluejay')"></div>
+            <div class="hotspot" style="top:48%; left:14%; width:6%; height:12%;" onclick="sim('fungi', this)" title="Fungi"></div>
+            <div class="hotspot" style="top:80%; left:6%;  width:6%; height:12%;" onclick="sim('bacteria', this)" title="Bacteria"></div>
             
-            <div class="node-target" id="node-swallowtail" title="Zebra Swallowtail Caterpillar" onclick="triggerCascade('swallowtail')"></div>
-            <div class="node-target" id="node-pawpaw" title="Pawpaw Fruit & Leaves" onclick="triggerCascade('pawpaw')"></div>
-            <div class="node-target" id="node-lupine" title="Wild Lupine" onclick="triggerCascade('lupine')"></div>
-            <div class="node-target" id="node-seeds" title="Seeds" onclick="triggerCascade('seeds')"></div>
-            <div class="node-target" id="node-elderberry" title="Elderberry" onclick="triggerCascade('elderberry')"></div>
+            <div class="hotspot" style="top:55%; left:28%; width:8%; height:16%;" onclick="sim('squirrel', this)" title="Gray Squirrel"></div>
+            <div class="hotspot" style="top:55%; left:41%; width:8%; height:14%;" onclick="sim('larva', this)" title="Karner Blue Larva"></div>
+            <div class="hotspot" style="top:62%; left:58%; width:8%; height:16%;" onclick="sim('rabbit', this)" title="Eastern Cottontail"></div>
+            <div class="hotspot" style="top:55%; left:67%; width:7%; height:14%;" onclick="sim('bluejay', this)" title="Bluejay"></div>
             
-            <div class="node-target" id="node-decomposers" title="Decomposers (Fungi & Bacteria)" onclick="triggerCascade('decomposers')"></div>
+            <div class="hotspot" style="top:73%; left:22%; width:8%; height:12%;" onclick="sim('swallowtail', this)" title="Zebra Swallowtail Larva"></div>
+            <div class="hotspot" style="top:84%; left:30%; width:8%; height:14%;" onclick="sim('pawpaw', this)" title="Pawpaw Plant"></div>
+            <div class="hotspot" style="top:80%; left:43%; width:7%; height:15%;" onclick="sim('lupine', this)" title="Wild Lupine"></div>
+            <div class="hotspot" style="top:75%; left:52%; width:7%; height:12%;" onclick="sim('seeds', this)" title="Buckeye Seeds"></div>
+            <div class="hotspot" style="top:82%; left:65%; width:8%; height:16%;" onclick="sim('berry', this)" title="Elderberry Bush"></div>
         </div>
 
-        <h3 style="font-size:11pt; text-transform:uppercase; margin-bottom:6px; color:var(--text-muted);">Real-Time Ecological Assessment Log:</h3>
-        <div class="dashboard-log" id="sim-logger">
-            SYSTEM STATUS: Dynamic equilibrium achieved. Select any structural organism coordinate link in the schematic map canvas above to isolate or fracture system performance.
+        <div class="log-box" id="log">SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.</div>
+        
+        <div class="controls">
+            <button class="btn btn-ghost" onclick="resetSim()">Reset System Matrix</button>
+            <button class="btn btn-primary" style="margin-left: auto;" onclick="nextPanel(4)">Advance to Energy Calculator &rarr;</button>
         </div>
-
-        <div class="action-row">
-            <button class="btn-action btn-secondary" onclick="clearSim()">Reset System Balance</button>
-            <button class="btn-action" onclick="shiftSection(4)">Advance to Trophic Energy Calculator ➔</button>
-        </div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
     </div>
 
-    <div id="panel-4" class="app-section">
-        <h2>🔺 Part 3: Thermodynamic Energy & The 10% Rule Calculator</h2>
-        <p class="instructions">Toggle between the trophic categories to watch the mathematical value change. See how energy is lost as heat as you move up the pyramid tiers.</p>
+    <div class="slide-container" id="slide-panel-4">
+        <h2>🔺 Thermodynamic Energy & The 10% Rule Calculator</h2>
+        <p class="instructions">Select different trophic levels below to run the energy transfer calculation. Watch how much energy is lost as heat as you move up the pyramid tiers.</p>
         
-        <div class="energy-split-layout">
-            <div class="energy-visual-pane">
-                <img src="slide11.png" alt="Energy Pyramid Visual Mapping" id="energy-pyramid-slide" style="max-width:100%; height:auto; border-radius:4px;">
+        <div class="energy-grid">
+            <div class="energy-visual">
+                <img src="slide11.png" id="energy-img" alt="Thermodynamic Matrix Visualization" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'400\' style=\'background:%23e2e8f0;\'><text x=\'50%\' y=\'50%\' fill=\'%23475569\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\'>Pyramid Overview Slide Missing</text></svg>'">
             </div>
             
-            <div class="energy-interactive-deck">
-                <div class="energy-tier-tab selected" id="tab-tier-1" onclick="calculateEnergyTier(1)">
+            <div class="tier-deck">
+                <div class="tier-card active" id="tc-1" onclick="calc(1)">
                     <span>🌱 Trophic Level 1: Primary Producers</span>
-                    <span class="energy-badge">Slide 12 Context</span>
+                    <span class="tier-badge">Slide 12</span>
                 </div>
-                <div class="energy-tier-tab" id="tab-tier-2" onclick="calculateEnergyTier(2)">
+                <div class="tier-card" id="tc-2" onclick="calc(2)">
                     <span>🐛 Trophic Level 2: Primary Consumers</span>
-                    <span class="energy-badge">Slide 13 Context</span>
+                    <span class="tier-badge">Slide 13</span>
                 </div>
-                <div class="energy-tier-tab" id="tab-tier-3" onclick="calculateEnergyTier(3)">
-                    <span>🪲 Trophic Level 3: Secondary Consumers</span>
-                    <span class="energy-badge">10% Retained</span>
+                <div class="tier-card" id="tc-3" onclick="calc(3)">
+                    <span>🐦 Trophic Level 3: Secondary Consumers</span>
+                    <span class="tier-badge">10% Yield</span>
                 </div>
-                <div class="energy-tier-tab" id="tab-tier-4" onclick="calculateEnergyTier(4)">
-                    <span>🐦 Trophic Level 4: Tertiary Consumers</span>
-                    <span class="energy-badge">10% Retained</span>
-                </div>
-                <div class="energy-tier-tab" id="tab-tier-5" onclick="calculateEnergyTier(5)">
-                    <span>🦅 Trophic Level 5: Quaternary / Apex Predators</span>
-                    <span class="energy-badge">Slide 14 Context</span>
+                <div class="tier-card" id="tc-4" onclick="calc(4)">
+                    <span>🦅 Trophic Level 4: Tertiary / Apex Consumers</span>
+                    <span class="tier-badge">Slide 14</span>
                 </div>
 
-                <div class="energy-display-matrix">
-                    <div class="energy-calc-row">
-                        <span>Baseline Producer Pool Content:</span>
-                        <span style="color:#a855f7; font-weight:bold;">10,000 kcal</span>
+                <div class="formula-container">
+                    <p id="energy-label" style="font-weight: 700; margin-bottom: 8px; color: #94a3b8;">Active Net Yield (Trophic Level 1):</p>
+                    <div id="math-formula-slot" style="margin: 12px 0;">
+                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                            <mn>10,000</mn>
+                            <mtext>&#160;kcal</mtext>
+                        </math>
                     </div>
-                    <div class="energy-calc-row">
-                        <span>Selected Active Trophic Level:</span>
-                        <span id="calc-level-lbl" style="color:#60a5fa;">Level 1</span>
-                    </div>
-                    <div class="energy-calc-row" style="border-bottom:2px solid #fff; padding-bottom:10px;">
-                        <span>Net Biomass Energy Transferred:</span>
-                        <span id="calc-energy-val" style="color:#4ade80; font-weight:bold; font-size:13pt;">10,000 kcal</span>
-                    </div>
-                    <div class="energy-calc-row" style="margin-top:8px; border:none;">
-                        <span style="color:#ef4444;">🔥 Metabolic Energy Dispersed/Lost (90%):</span>
-                        <span id="calc-loss-val" style="color:#ef4444; font-weight:bold;">0 kcal</span>
+                    <div class="formula-row" style="border-top: 1px solid #334155; padding-top: 10px; margin-top: 10px;">
+                        <span style="color: #f87171;">🔥 Dissipated Metabolic Heat Loss (90%):</span>
+                        <span id="loss-label" style="color: #f87171; font-weight: 700;">0 kcal</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div id="energy-text-explanation" style="background:#f1f5f9; padding:16px; border-radius:var(--radius-md); font-size:10.5pt; border-left:4px solid var(--primary); margin-bottom:12px;">
-            At the foundational tier, the autotroph producers capture light photons from the sun to synthesize stable chemical bonds, outputting a reference level of 10,000 kcal of biomass energy.
+        
+        <div class="controls" style="margin-top: auto;">
+            <button class="btn btn-primary" style="margin-left: auto;" onclick="nextPanel(5)">Generate Cumulative Final Exam &rarr;</button>
         </div>
-
-        <div class="action-row">
-            <button class="btn-action" onclick="shiftSection(5)">Generate Final Exam ➔</button>
-        </div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div></div>
     </div>
 
-    <div id="panel-5" class="app-section">
-        <h2>🎓 Part 4: Cumulative Content Mastery Assessment</h2>
-        <p class="instructions">Answer the following questions selected at random from our class biology bank.</p>
-        <form id="mastery-quiz-form"><div id="quiz-injector-deck"></div></form>
-        <div class="action-row">
-            <button class="btn-action" onclick="evaluateMasteryMetrics()">Submit Exam</button>
+    <div class="slide-container" id="slide-panel-5">
+        <h2>🎓 Cumulative Content Mastery Assessment</h2>
+        <p class="instructions">Complete the following questions compiled from the course biology database.</p>
+        
+        <div id="quiz-mastery-deck" style="overflow-y: auto; max-height: 480px; padding-right: 10px; margin-bottom: 20px;"></div>
+        
+        <div id="score-summary-zone" style="display: none;" class="score-box">
+            <p style="text-transform: uppercase; font-weight: 800; color: var(--text-muted); letter-spacing: 1px;">Evaluation Metrics Result</p>
+            <div class="score-num" id="score-output-val">0%</div>
+            <p id="score-critique-text" style="font-size: 13pt; font-weight: 600; line-height: 1.5; max-width: 700px; margin: 0 auto;"></p>
         </div>
+
+        <div class="controls" style="margin-top: auto;">
+            <button class="btn btn-ghost" id="btn-reboot" style="display: none;" onclick="location.reload()">Restart Learning Module</button>
+            <button class="btn btn-primary" id="btn-submit-quiz" style="margin-left: auto;" onclick="gradeQuiz()">Submit Exam Papers</button>
+        </div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div></div>
     </div>
 
-    <div id="panel-6" class="app-section">
-        <h2>📊 Performance Breakdown Summary</h2>
-        <div class="score-banner">
-            <p style="font-weight:600; color:var(--text-muted); text-transform:uppercase;">Exam Score</p>
-            <div class="score-val" id="score-metric-output">0%</div>
-            <p id="score-verbal-rating" style="margin-top:8px; font-weight:600;"></p>
-        </div>
-        <div id="breakdown-critique-box" style="margin-bottom:20px;"></div>
-        <div class="action-row">
-            <button class="btn-action" onclick="rebootSystemModule()">Restart Module</button>
-        </div>
-    </div>
-</div>
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 14;
 
-<script>
-    let activeSlideIndex = 1;
-    const totalSlidesCount = 14;
-
-    function shiftSlide(direction) {
-        activeSlideIndex += direction;
-        if (activeSlideIndex < 1) activeSlideIndex = totalSlidesCount;
-        if (activeSlideIndex > totalSlidesCount) activeSlideIndex = 1;
-        document.getElementById('gallery-canvas').src = `slide${activeSlideIndex}.png`;
-        document.getElementById('gallery-idx').innerText = `Slide ${activeSlideIndex} / ${totalSlidesCount}`;
-    }
-
-    function shiftSection(targetPanelId) {
-        document.querySelectorAll('.app-section').forEach(p => p.classList.remove('active'));
-        document.getElementById(`panel-${targetPanelId}`).classList.add('active');
-        
-        const trackingNodes = document.querySelectorAll('.tracker-step');
-        trackingNodes.forEach((node, idx) => {
-            node.className = 'tracker-step';
-            if (idx + 1 < targetPanelId) node.classList.add('completed');
-            if (idx + 1 === targetPanelId) node.classList.add('active');
-        });
-        
-        if (targetPanelId === 4) calculateEnergyTier(1);
-        if (targetPanelId === 5) compileMasteryExamDeck();
-    }
-
-    function verifyCheckpoint(element, isCorrect) {
-        const feedback = document.getElementById('checkpoint-feedback');
-        element.parentElement.querySelectorAll('.option-card').forEach(c => c.className = 'option-card');
-        if (isCorrect) {
-            element.classList.add('correct');
-            feedback.style.display = 'block'; feedback.style.background = 'var(--accent-green-light)'; feedback.style.color = 'var(--accent-green)';
-            feedback.innerText = "🎯 Correct! Because the rabbit belongs to multiple food chains inside the web, it passes its energy to both the Fox and the Hawk.";
-            document.getElementById('gate-to-sim').style.display = 'inline-block';
-        } else {
-            element.classList.add('incorrect');
-            feedback.style.display = 'block'; feedback.style.background = 'var(--accent-red-light)'; feedback.style.color = 'var(--accent-red)';
-            feedback.innerText = "❌ That isn't correct. Think about the direction the arrows are traveling and who gets the energy.";
+        // Slide Gallery Engine Controller
+        function changeSlide(dir) {
+            currentSlide += dir;
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+            document.getElementById('main-gallery').src = `slide${currentSlide}.png`;
+            document.getElementById('slide-count-txt').innerText = `Slide ${currentSlide} / ${totalSlides}`;
         }
-    }
 
-    // WEB FRACTURE LOGIC
-    function triggerCascade(isolatedKey) {
-        clearSim();
-        const logger = document.getElementById('sim-logger');
-        
-        const cat = document.getElementById('node-cat');
-        const stinkbug = document.getElementById('node-stinkbug');
-        const cardinal = document.getElementById('node-cardinal');
-        const hawk = document.getElementById('node-hawk');
-        const fox = document.getElementById('node-fox');
-        const squirrel = document.getElementById('node-squirrel');
-        const larva = document.getElementById('node-larva');
-        const rabbit = document.getElementById('node-rabbit');
-        const bluejay = document.getElementById('node-bluejay');
-        const swallowtail = document.getElementById('node-swallowtail');
-        const pawpaw = document.getElementById('node-pawpaw');
-        const lupine = document.getElementById('node-lupine');
-        const seeds = document.getElementById('node-seeds');
-        const elderberry = document.getElementById('node-elderberry');
-        const decomposers = document.getElementById('node-decomposers');
-
-        switch(isolatedKey) {
-            case 'lupine':
-                lupine.className = 'node-target dead';
-                larva.className = 'node-target affected'; stinkbug.className = 'node-target affected'; cardinal.className = 'node-target affected'; hawk.className = 'node-target affected';
-                logger.innerHTML = "⚠️ CRITICAL PRODUCER REMOVAL: Removing Wild Lupine triggers a bottom-up collapse of your slide chain! Karner Blue caterpillars starve instantly, breaking the energy channel to your Stinkbugs and Cardinals.";
-                break;
-            case 'pawpaw':
-                pawpaw.className = 'node-target dead';
-                swallowtail.className = 'node-target affected'; squirrel.className = 'node-target affected'; cat.className = 'node-target affected';
-                logger.innerHTML = "🔬 OFF-NOTES EXPERIMENT: Removing Pawpaw trees impacts the Zebra Swallowtail caterpillar (a specialist herbivore) and reduces options for the Gray Squirrel.";
-                break;
-            case 'elderberry':
-                elderberry.className = 'node-target dead';
-                rabbit.className = 'node-target affected'; bluejay.className = 'node-target affected'; fox.className = 'node-target affected';
-                logger.innerHTML = "🔬 OFF-NOTES EXPERIMENT: Removing Elderberry bushes impacts the Eastern Cottontail and the Bluejay. Because Bluejays lose a direct producer link, they are forced to compete heavily for seeds.";
-                break;
-            case 'seeds':
-                seeds.className = 'node-target dead';
-                squirrel.className = 'node-target affected'; bluejay.className = 'node-target affected'; rabbit.className = 'node-target affected';
-                logger.innerHTML = "⚠️ PRODUCER FRACTURE: Removing seeds creates severe competition across mid-level primary consumers. Squirrels, rabbits, and bluejays must overgraze alternatives to survive.";
-                break;
-            case 'larva':
-                larva.className = 'node-target dead';
-                stinkbug.className = 'node-target affected'; cardinal.className = 'node-target affected';
-                logger.innerHTML = "⚠️ REMOVING THE HERBIVORE LINK: Breaking the caterpillar link leaves the Stinkbug without its primary prey item. Stinkbug counts drop, causing a secondary drop in the Cardinal population.";
-                break;
-            case 'squirrel':
-                squirrel.className = 'node-target dead';
-                cat.className = 'node-target affected'; fox.className = 'node-target affected'; hawk.className = 'node-target affected';
-                logger.innerHTML = "⚠️ MID-LEVEL CONSUMER LOSS: Removing Gray Squirrels leaves outdoor cats, foxes, and hawks with one less mammal prey option. Predatory pressure shifts heavily onto rabbits and cardinals.";
-                break;
-            case 'rabbit':
-                rabbit.className = 'node-target dead';
-                fox.className = 'node-target affected'; hawk.className = 'node-target affected';
-                logger.innerHTML = "⚠️ MAIN MAMMAL PREY REMOVAL: The Eastern Cottontail is an essential prey base. Removing it forces the Red Fox and Cooper's Hawk to rely almost completely on local songbirds, accelerating songbird declines.";
-                break;
-            case 'bluejay':
-                bluejay.className = 'node-target dead';
-                fox.className = 'node-target affected'; hawk.className = 'node-target affected';
-                logger.innerHTML = "🔬 COMMUNITY SHIFT: Removing Bluejays changes the dynamic for high-level birds of prey, forcing hawks to adjust their hunting patterns toward other small birds like cardinals.";
-                break;
-            case 'stinkbug':
-                stinkbug.className = 'node-target dead';
-                cardinal.className = 'node-target affected';
-                logger.innerHTML = "⚠️ INTERMEDIATE LINK BROKEN: Stripping out the Stinkbug disrupts the core chain. Cardinals lose an insect prey target, forcing them to spend more energy searching for seeds or berries.";
-                break;
-            case 'cardinal':
-                cardinal.className = 'node-target dead';
-                hawk.className = 'node-target affected'; fox.className = 'node-target affected'; stinkbug.className = 'node-target affected';
-                logger.innerHTML = "⚠️ MID-CHAIN SONG BIRD FRACTURE: Without the Northern Cardinal, Stinkbug populations initially swell unchecked due to lack of predation control. Meanwhile, top predators lose a valuable food source.";
-                break;
-            case 'cat':
-                cat.className = 'node-target dead';
-                squirrel.className = 'node-target affected';
-                logger.innerHTML = "🔬 INVASIVE TOP-DOWN PRESSURES: Outdoor domestic cats are non-native apex predators. Removing them relieves extreme hunting pressures on local Gray Squirrels and nesting birds.";
-                break;
-            case 'hawk':
-                hawk.className = 'node-target dead';
-                cardinal.className = 'node-target affected'; rabbit.className = 'node-target affected';
-                logger.innerHTML = "⚠️ LOSS OF APEX PREDATOR: Removing the Cooper's Hawk triggers a top-down cascade. Without this predator, mid-level consumer populations can grow out of control, eventually overgrazing local plants.";
-                break;
-            case 'fox':
-                fox.className = 'node-target dead';
-                rabbit.className = 'node-target affected'; squirrel.className = 'node-target affected';
-                logger.innerHTML = "⚠️ APEX CARNIVORE REMOVAL: Removing the Red Fox alters the population controls on rabbits and rodents, which can cause these herbivore groups to multiply rapidly.";
-                break;
-            case 'decomposers':
-                decomposers.className = 'node-target dead';
-                pawpaw.className = 'node-target affected'; lupine.className = 'node-target affected'; elderberry.className = 'node-target affected'; seeds.className = 'node-target affected';
-                logger.innerHTML = "🔬 CRITICAL DECOMPOSER DISRUPTION: Removing fungi and bacteria breaks the nutrient recycling loop! Dead matter piles up instead of breaking down, starving the soil and eventually causing all primary producers to fail.";
-                break;
+        // Section Routing Architecture
+        function nextPanel(id) {
+            document.querySelectorAll('.slide-container').forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-panel-${id}`).classList.add('active');
+            if (id === 5) loadQuiz();
         }
-    }
 
-    function clearSim() {
-        document.querySelectorAll('.node-target').forEach(n => n.className = 'node-target');
-        document.getElementById('sim-logger').innerHTML = "SYSTEM STATUS: Dynamic equilibrium achieved. Select any structural organism coordinate link in the schematic map canvas above to isolate or fracture system performance.";
-    }
-
-    // INTERACTIVE THERMODYNAMIC METRIC CALCULATOR
-    function calculateEnergyTier(tierId) {
-        document.querySelectorAll('.energy-tier-tab').forEach(t => t.classList.remove('selected'));
-        document.getElementById(`tab-tier-${tierId}`).classList.add('selected');
-        
-        const slideUi = document.getElementById('energy-pyramid-slide');
-        const levelLbl = document.getElementById('calc-level-lbl');
-        const energyVal = document.getElementById('calc-energy-val');
-        const lossVal = document.getElementById('calc-loss-val');
-        const explText = document.getElementById('energy-text-explanation');
-
-        switch(tierId) {
-            case 1:
-                slideUi.src = "slide12.png";
-                levelLbl.innerText = "Level 1 (Producers)";
-                energyVal.innerText = "10,000 kcal";
-                lossVal.innerText = "0 kcal (Base Baseline)";
-                explText.innerHTML = "<strong>Slide 12 Application:</strong> At the foundational level, autotroph producers capture sunlight to synthesize biomass, establishing a base pool of <strong>10,000 kcal</strong>.";
-                break;
-            case 2:
-                slideUi.src = "slide13.png";
-                levelLbl.innerText = "Level 2 (Primary Consumers)";
-                energyVal.innerText = "1,000 kcal";
-                lossVal.innerText = "9,000 kcal lost as heat & waste";
-                explText.innerHTML = "<strong>Slide 13 Application:</strong> Following your slide's rule, 'remove a zero' as you move up! The caterpillars retain 10% (<strong>1,000 kcal</strong>), while 90% is dissipated as metabolic heat.";
-                break;
-            case 3:
-                slideUi.src = "slide11.png";
-                levelLbl.innerText = "Level 3 (Secondary Consumers)";
-                energyVal.innerText = "100 kcal";
-                lossVal.innerText = "9,900 kcal cumulative loss";
-                explText.innerHTML = "<strong>Pyramid Progress:</strong> Stinkbugs feeding on the primary consumers retain 10% of that tier's value. Only <strong>100 kcal</strong> reaches this level.";
-                break;
-            case 4:
-                slideUi.src = "slide11.png";
-                levelLbl.innerText = "Level 4 (Tertiary Consumers)";
-                energyVal.innerText = "10 kcal";
-                lossVal.innerText = "9,990 kcal cumulative loss";
-                explText.innerHTML = "<strong>Pyramid Progress:</strong> When a Northern Cardinal eats the bugs, the available energy drops to <strong>10 kcal</strong>. This limited energy transfer explains why food chains are typically short.";
-                break;
-            case 5:
-                slideUi.src = "slide14.png";
-                levelLbl.innerText = "Level 5 (Apex Predators)";
-                energyVal.innerText = "1 kcal";
-                lossVal.innerText = "9,999 kcal lost to environment";
-                explText.innerHTML = "<strong>Slide 14 Application:</strong> At the peak of the pyramid, hawks and cats receive just <strong>1 kcal</strong> of the original 10,000 kcal pool, illustrating why apex predators require vast territories to hunt.";
-                break;
+        // Gateway Mid-Checkpoint Verification
+        function checkMid(el, correct) {
+            const feed = document.getElementById('mid-feedback');
+            el.parentElement.querySelectorAll('.quiz-option').forEach(o => o.className = 'quiz-option');
+            if (correct) {
+                el.classList.add('correct');
+                feed.style.color = "var(--primary-dark)";
+                feed.innerText = "🎯 Correct! Energy flows systematically from the organism consumed to the organism digesting it.";
+                document.getElementById('btn-to-3').style.display = "block";
+            } else {
+                el.classList.add('incorrect');
+                feed.style.color = "var(--accent-red)";
+                feed.innerText = "❌ Incorrect. Remember the rule: the arrow points toward the consumer who receives the energy.";
+            }
         }
-    }
 
-    // Comprehensive 30-Question Grade 9-10 Question Pool
-    const masterQuestionPool = [
-        { q: "Based on your slides, which organism functions as the Primary Producer?", options: ["Karner Blue Larva", "Wild Lupine", "Stink Bug", "Northern Cardinal"], a: 1 },
-        { q: "In the presented food chain, the Stink Bug occupies which specific trophic level?", options: ["Primary Producer", "Primary Consumer", "Secondary Consumer", "Apex Predator"], a: 2 },
-        { q: "If all Wild Lupine is cleared from an Ohio field, what type of ecological collapse occurs?", options: ["Top-down trophic cascade", "Bottom-up resource collapse", "Decomposer cycling spike"], a: 1 },
-        { q: "What do the arrows in your Slide 4 food web directly represent?", options: ["The structural size of the animals", "The flow of chemical energy from the organism eaten to the organism eating it", "The physical migration paths of Ohio birds"], a: 1 },
-        { q: "According to the 10% rule of ecological energy transfer, if Wild Lupine contains 10,000 kcal of energy, how much energy is available to the larvae that eat it?", options: ["10,000 kcal", "1,000 kcal", "100 kcal", "10 kcal"], a: 1 },
-        { q: "Why is the Red-tailed Hawk classified as a Quaternary Consumer or Apex Predator in your slides?", options: ["It makes its own food from the sun", "It is at the top of the chain and is not regularly preyed upon by other animals", "It only eats plants"], a: 1 },
-        { q: "If a disease removes the Northern Cardinal from this ecosystem, what is a direct short-term consequence?", options: ["Stink bug populations will spike because their predator is gone", "Wild Lupine will stop growing", "Hawks will immediately double their population"], a: 0 },
-        { q: "The Karner Blue Butterfly Larva eats only Wild Lupine. This makes it an ecological:", options: ["Specialist Herbivore", "Generalist Omnivore", "Apex Carnivore"], a: 0 },
-        { q: "Which tier of an ecological pyramid built from your slides would have the SMALLEST total biomass?", options: ["The Wild Lupine level", "The Karner Blue Larva level", "The Red-tailed Hawk level"], a: 2 },
-        { q: "What form does the 'lost 90%' of energy take as it moves up from the Lupine to the Larva?", options: ["It is destroyed completely", "It is lost to the environment as metabolic heat and waste products", "It turns into soil minerals"], a: 1 },
-        { q: "If an Ohio habitat contains a variety of plants instead of just one, the food web becomes more stable because:", options: ["Animals have alternative choices if one link breaks", "Plants can run away from predators", "Decomposers stop working"], a: 0 },
-        { q: "What is the primary source of all energy powering your Ohio slide food web?", options: ["Nutrients in the dirt", "Solar radiation captured via photosynthesis", "Heat from decomposing leaves"], a: 1 },
-        { q: "A non-biodegradable chemical pesticide is sprayed on an Ohio field. Which organism will suffer the most due to biomagnification?", options: ["Wild Lupine", "Stink Bug", "Red-tailed Hawk (Apex)"], a: 2 },
-        { q: "Feral cats and Red-tailed hawks both preying on Northern Cardinals is an example of:", options: ["Mutualism", "Competition for resources", "Primary decomposition"], a: 1 },
-        { q: "Which organism is responsible for breaking down dead matter and recycling minerals back to the Lupine?", options: ["Primary Producers", "Decomposers/Detritivores", "Apex Predators"], a: 1 },
-        { q: "Why are there rarely more than 4 or 5 levels in any Ohio food chain?", options: ["There isn't enough physical space for more animals", "Energy runs out because 90% is lost at each step", "Animals get too large to be eaten"], a: 1 },
-        { q: "What is a major threat to the Karner Blue Butterfly in Ohio?", options: ["Loss of wild lupine habitat due to development", "An overabundance of primary producers", "Hawks changing to eat plants"], a: 0 },
-        { q: "The Northern Cardinal eats the Stink Bug. The Cardinal is a:", options: ["Herbivore", "Carnivore/Predator", "Producer"], a: 1 },
-        { q: "What would happen if a brand new invasive insect that eats only lupine was introduced to Ohio?", options: ["It would compete directly with the Karner Blue Larva for food", "It would help the hawks grow faster", "It would have zero effect"], a: 0 },
-        { q: "An organism that can eat both berries (producers) and bugs (consumers) is called an:", options: ["Herbivore", "Omnivore", "Carnivore"], a: 1 },
-        { q: "If a top-down cascade occurs because hawks are removed, what happens?", options: ["The producers collapse first", "The prey below them experience population shifts due to less hunting control", "The sun stops providing energy"], a: 1 },
-        { q: "The carrying capacity of Karner Blue butterflies in an Ohio park is determined by:", options: ["The amount of available Wild Lupine food and shelter", "The wing size of the butterflies", "The number of clouds in the sky"], a: 0 },
-        { q: "Which sequence correctly tracks our slide's food chain?", options: ["Lupine ➔ Larva ➔ Stink Bug ➔ Cardinal", "Hawk ➔ Cardinal ➔ Stink Bug ➔ Lupine", "Larva ➔ Lupine ➔ Hawk ➔ Cardinal"], a: 0 },
-        { q: "A living thing that makes its own food using energy from the environment is a:", options: ["Heterotroph", "Autotroph / Producer", "Scavenger"], a: 1 },
-        { q: "An organism that must consume other living things to get energy is a:", options: ["Producer", "Consumer / Heterotroph", "Abiotic factor"], a: 1 },
-        { q: "What role do the green leaves of the Wild Lupine play?", options: ["They absorb oxygen to create soil", "They capture sunlight to convert carbon dioxide into chemical sugars", "They hunt smaller insects"], a: 1 },
-        { q: "If a massive frost kills the Stink Bugs but leaves the Larva alive, what will the Cardinals likely do to survive?", options: ["Switch to alternative insect food sources within the broader web", "Instantly turn into producers", "Hibernate for ten years"], a: 0 },
-        { q: "Ecology is the study of how:", options: ["Rocks are formed over centuries", "Living organisms interact with each other and their non-living environment", "Cell walls function under microscopes"], a: 1 },
-        { q: "The non-living parts of an Ohio habitat (like temperature, water, and soil) are called:", options: ["Biotic factors", "Abiotic factors", "Trophic levels"], a: 1 },
-        { q: "How does high plant biodiversity protect an Ohio woodlot?", options: ["It provides multiple energy pathways so the system doesn't rely on just one plant", "It stops animals from eating plants"], a: 1 }
-    ];
+        // Structural Cascade Engineering Logic Matrix
+        function sim(type, element) {
+            resetSim();
+            element.classList.add('dead');
+            const log = document.getElementById('log');
 
-    let currentSelectedQuestions = [];
+            // Select dependency nodes to show cascade impacts visually
+            const larvaNode = document.querySelector('[title="Karner Blue Larva"]');
+            const bugNode = document.querySelector('[title="Stinkbug"]');
+            const birdNode = document.querySelector('[title="Cardinal"]');
+            const swallowtailNode = document.querySelector('[title="Zebra Swallowtail Larva"]');
+            const rabbitNode = document.querySelector('[title="Eastern Cottontail"]');
+            const squirrelNode = document.querySelector('[title="Gray Squirrel"]');
+            const seedsNode = document.querySelector('[title="Buckeye Seeds"]');
+            const berryNode = document.querySelector('[title="Elderberry Bush"]');
+            const pawpawNode = document.querySelector('[title="Pawpaw Plant"]');
+            const lupineNode = document.querySelector('[title="Wild Lupine"]');
 
-    function compileMasteryExamDeck() {
-        const shuffledDeck = [...masterQuestionPool];
-        for (let i = shuffledDeck.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+            if (type === 'lupine') {
+                larvaNode.classList.add('affected');
+                bugNode.classList.add('affected');
+                birdNode.classList.add('affected');
+                log.innerHTML = "<strong>⚠️ CRITICAL BOTTOM-UP CRASH:</strong> Removing Wild Lupine instantly starves the specialist Karner Blue Larva. Without them, Stinkbugs lose a primary food source, which destabilizes Northern Cardinal counts.";
+            } else if (type === 'pawpaw') {
+                swallowtailNode.classList.add('affected');
+                log.innerHTML = "<strong>🔬 SPECIALIST SHUCK:</strong> Pawpaw is the exclusive host plant for the Zebra Swallowtail Larva. Stripping it eliminates this butterfly species from the local forest plot.";
+            } else if (type === 'hawk' || type === 'fox') {
+                rabbitNode.classList.add('affected');
+                squirrelNode.classList.add('affected');
+                log.innerHTML = "<strong>⚠️ TOP-DOWN TROPHIC CASCADE:</strong> Displacing apex predators breaks down population control limits. Herbivores (Rabbits, Squirrels) experience rapid growth, leading to overgrazing of native seedlings.";
+            } else if (type === 'fungi' || type === 'bacteria') {
+                pawpawNode.classList.add('affected');
+                lupineNode.classList.add('affected');
+                seedsNode.classList.add('affected');
+                berryNode.classList.add('affected');
+                log.innerHTML = "<strong>⚠️ NUTRIENT LOOP STALL:</strong> Removing Decomposers (Fungi/Bacteria) breaks down the biogeochemical recycling sequence. Soil quality rapidly drops, lowering the carrying capacity of all producers.";
+            } else {
+                log.innerHTML = "<strong>⚠️ STRUCTURAL PATHWAY MODIFICATION:</strong> Link isolated. Mid-tier consumers face increased competitive stress, forcing apex omnivores to shift hunting pressures onto alternative food chains.";
+            }
         }
-        currentSelectedQuestions = shuffledDeck.slice(0, 12);
-        
-        const uiContainer = document.getElementById('quiz-injector-deck');
-        uiContainer.innerHTML = '';
-        currentSelectedQuestions.forEach((nodeData, idx) => {
-            let formBlock = `<div class="quiz-block"><p class="quiz-question-text">${idx + 1}. ${nodeData.q}</p>`;
-            nodeData.options.forEach((choice, choiceIdx) => {
-                formBlock += `<label class="quiz-radio-option"><input type="radio" name="mastery_q_${idx}" value="${choiceIdx}"> ${choice}</label>`;
+
+        function resetSim() {
+            document.querySelectorAll('.hotspot').forEach(h => h.className = 'hotspot');
+            document.getElementById('log').innerHTML = "SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.";
+        }
+
+        // Thermodynamic Math Calculation Calculator Core
+        function calc(level) {
+            document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`tc-${level}`).classList.add('active');
+            
+            const pyramidImg = document.getElementById('energy-img');
+            const label = document.getElementById('energy-label');
+            const mathFormulaSlot = document.getElementById('math-formula-slot');
+            const loss = document.getElementById('loss-label');
+
+            const values = [10000, 1000, 100, 10];
+            const images = ["slide12.png", "slide13.png", "slide11.png", "slide14.png"];
+            
+            pyramidImg.src = images[level - 1];
+            label.innerText = `Active Net Yield (Trophic Level ${level}):`;
+            
+            // Render calculations with proper formatting
+            mathFormulaSlot.innerHTML = `
+                <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                    <mn>${values[level - 1].toLocaleString()}</mn>
+                    <mtext>&#160;kcal</mtext>
+                </math>
+            `;
+            
+            const calculatedLoss = (level === 1) ? 0 : (values[level - 2] * 0.9);
+            loss.innerText = `${calculatedLoss.toLocaleString()} kcal`;
+        }
+
+        // Complete Curriculum Question Assessment Bank
+        const questionPool = [
+            { q: "If Wild Lupine (Producer) is fully cleared from a section, why does the Karner Blue Larva population crash?", a: 1, o: ["It learns to hunt high-level hawk lines", "It is a specialist herbivore that depends entirely on lupine for nutrition", "It mutates into a decomposer matrix"] },
+            { q: "According to thermodynamic principles, what percent of net biomass energy is LOST at each consecutive tier transfer?", a: 0, o: ["90%", "10%", "50%"] },
+            { q: "Which ecosystem member occupies the niche of a Secondary Consumer in your slide materials?", a: 2, o: ["Buckeye Seeds", "Wild Lupine", "Stinkbug"] },
+            { q: "In a 'Top-Down' food web cascade, structural collapse sequences usually originate from which tier?", a: 0, o: ["The Apex Predator tier", "The Primary Producer base layer", "The Soil Decomposer group"] },
+            { q: "If the base producer layer generates 10,000 kcal of net energy, how much remains accessible at Level 4?", a: 1, o: ["100 kcal", "10 kcal", "1,000 kcal"] },
+            { q: "What is the primary thermodynamic driving engine powering this entire food web system?", a: 2, o: ["Soil mineral decay cycles", "Metabolic heat loops", "Solar radiation caught through photosynthesis"] },
+            { q: "Bacteria and Fungi are classified under what functional biological categorization?", a: 0, o: ["Decomposers / Detritivores", "Primary Autotroph Producers", "Tertiary Apex Consumers"] },
+            { q: "Which animal acts as an Apex Predator in your web?", a: 1, o: ["Bluejay", "Cooper's Hawk", "Stinkbug"] },
+            { q: "If decomposers are completely removed from an ecosystem, what is the direct long-term consequence?", a: 0, o: ["Nutrient recycling stalls, weakening the primary producer base layer", "Producers grow at double their normal rate", "Animals stop losing energy as heat"] },
+            { q: "What form does the 90% of lost energy take as it moves up through the trophic pyramid tiers?", a: 2, o: ["It turns into new mineral resources", "It is stored inside the consumer's skeletal structure", "It is dissipated into the environment as metabolic heat and waste"] }
+        ];
+
+        let chosenQuizSet = [];
+        let userChoices = {};
+
+        function loadQuiz() {
+            // Pick 10 random questions from the question bank
+            chosenQuizSet = questionPool.sort(() => 0.5 - Math.random()).slice(0, 10);
+            const container = document.getElementById('quiz-mastery-deck');
+            
+            container.innerHTML = chosenQuizSet.map((item, idx) => `
+                <div class="quiz-block" id="q-block-${idx}">
+                    <p class="quiz-question-text">${idx + 1}. ${item.q}</p>
+                    ${item.o.map((opt, oIdx) => `
+                        <div class="quiz-option" id="opt-${idx}-${oIdx}" onclick="selectOption(${idx}, ${oIdx})">${opt}</div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function selectOption(qIdx, oIdx) {
+            const block = document.getElementById(`q-block-${qIdx}`);
+            block.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+            
+            userChoices[qIdx] = oIdx;
+            document.getElementById(`opt-${qIdx}-${oIdx}`).classList.add('selected');
+        }
+
+        function gradeQuiz() {
+            // Check for unselected answers
+            let incomplete = false;
+            for (let i = 0; i < chosenQuizSet.length; i++) {
+                if (userChoices[i] === undefined) {
+                    incomplete = true;
+                    document.getElementById(`q-block-${i}`).style.borderColor = "var(--accent-red)";
+                } else {
+                    document.getElementById(`q-block-${i}`).style.borderColor = "var(--border)";
+                }
+            }
+
+            if (incomplete) {
+                alert("Please answer all questions before submitting your exam.");
+                return;
+            }
+
+            let correctCount = 0;
+            chosenQuizSet.forEach((item, idx) => {
+                const userSelection = userChoices[idx];
+                const block = document.getElementById(`q-block-${idx}`);
+                
+                block.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+                
+                if (userSelection === item.a) {
+                    correctCount++;
+                    document.getElementById(`opt-${idx}-${userSelection}`).classList.add('correct');
+                } else {
+                    document.getElementById(`opt-${idx}-${userSelection}`).classList.add('incorrect');
+                    document.getElementById(`opt-${idx}-${item.a}`).classList.add('correct');
+                }
             });
-            formBlock += `</div>`;
-            uiContainer.innerHTML += formBlock;
-        });
-    }
 
-    function evaluateMasteryMetrics() {
-        let correct = 0; let unanswered = 0;
-        currentSelectedQuestions.forEach((qData, idx) => {
-            const selected = document.querySelector(`input[name="mastery_q_${idx}"]:checked`);
-            if (!selected) unanswered++;
-            else if (parseInt(selected.value) === qData.a) correct++;
-        });
+            const finalPercent = Math.round((correctCount / chosenQuizSet.length) * 100);
+            
+            // Hide the question deck and show the scores
+            document.getElementById('quiz-mastery-deck').style.display = "none";
+            document.getElementById('btn-submit-quiz').style.display = "none";
+            
+            const scoreZone = document.getElementById('score-summary-zone');
+            const scoreVal = document.getElementById('score-output-val');
+            const critique = document.getElementById('score-critique-text');
+            const rebootBtn = document.getElementById('btn-reboot');
+            
+            scoreZone.style.display = "block";
+            rebootBtn.style.display = "inline-block";
+            scoreVal.innerText = `${finalPercent}%`;
 
-        if (unanswered > 0) {
-            alert(`Please complete all ${unanswered} remaining questions before submitting.`);
-            return;
+            if (finalPercent >= 80) {
+                critique.style.color = "var(--primary-dark)";
+                critique.innerText = `🏆 Advanced Competency Verified! Excellent work, you earned a score of ${correctCount} / 10. You demonstrate a clear understanding of Ohio ecosystem structures, thermodynamic dissipation rules, and trophic levels.`;
+            } else if (finalPercent >= 60) {
+                critique.style.color = "var(--accent-amber)";
+                critique.innerText = `👍 Proficient Grade Established. You earned a score of ${correctCount} / 10. You have a solid grasp of these concepts. Review the interactive tools to practice the 10% math again before taking your next exam.`;
+            } else {
+                critique.style.color = "var(--accent-red)";
+                critique.innerText = `🧐 Review Recommended. You earned a score of ${correctCount} / 10. Take another look at the learning slides and test the sandbox shapes before trying again!`;
+            }
         }
-
-        const pct = Math.round((correct / currentSelectedQuestions.length) * 100);
-        shiftSection(6);
-        document.getElementById('score-metric-output').innerText = `${pct}%`;
-        
-        const textUi = document.getElementById('score-verbal-rating');
-        const critiqueUi = document.getElementById('breakdown-critique-box');
-        
-        if (pct >= 85) {
-            textUi.style.color = "var(--accent-green)"; textUi.innerText = "🏆 Advanced Ecological Competency Verified!";
-            critiqueUi.innerHTML = `Excellent work! You scored <strong>${correct} / ${currentSelectedQuestions.length}</strong>. You thoroughly understand Ohio ecosystems, energy pyramids, and how broken links cause trophic cascades.`;
-        } else if (pct >= 70) {
-            textUi.style.color = "var(--accent-amber)"; textUi.innerText = "👍 Proficient Understanding Achieved.";
-            critiqueUi.innerHTML = `Good job! You scored <strong>${correct} / ${currentSelectedQuestions.length}</strong>. You have a solid grasp of these concepts. Review the interactive tools to practice the 10% math again.`;
-        } else {
-            textUi.style.color = "var(--accent-red)"; textUi.innerText = "🧐 Review Recommended.";
-            critiqueUi.innerHTML = `You scored <strong>${correct} / ${currentSelectedQuestions.length}</strong>. Take another look at the learning slides and test the sandbox shapes before trying again!`;
-        }
-    }
-
-    function rebootSystemModule() {
-        clearSim();
-        document.getElementById('checkpoint-feedback').style.display = 'none';
-        document.getElementById('gate-to-sim').style.display = 'none';
-        document.getElementById('mastery-quiz-form').reset();
-        activeSlideIndex = 1;
-        document.getElementById('gallery-canvas').src = `slide1.png`;
-        document.getElementById('gallery-idx').innerText = `Slide 1 / 14`;
-        shiftSection(1);
-    }
-</script>
-
+    </script>
 </body>
 </html>
