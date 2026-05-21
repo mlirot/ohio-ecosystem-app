@@ -139,15 +139,25 @@
         
         .tier-deck { display: flex; flex-direction: column; gap: 8px; }
         .tier-card { 
-            padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center; font-weight: 700; transition: all 0.2s; background: #fff; font-size: 10.5pt;
+            padding: 14px 18px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; font-weight: 700; transition: all 0.2s; background: #fff; font-size: 11pt;
         }
         .tier-card:hover { border-color: var(--primary); background: var(--primary-light); }
         .tier-card.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); box-shadow: 0 0 0 1px var(--primary); }
-        .tier-badge { background: #1e293b; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 8.5pt; font-family: monospace; }
+        
+        /* Clean Graphic Retained Retort System */
+        .energy-stat-badge {
+            background: var(--primary);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 9.5pt;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
 
-        .formula-container { background: #1e293b; color: white; padding: 18px; border-radius: 8px; margin-top: 12px; }
-        .formula-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding: 6px 0; font-family: monospace; }
+        .formula-container { background: #1e293b; color: white; padding: 22px; border-radius: 8px; margin-top: 12px; }
+        .formula-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding: 8px 0; font-family: monospace; font-size: 11pt; }
 
         /* Assessment Quiz Blocks */
         .quiz-block { background: #f8fafc; border: 1px solid var(--border); padding: 20px; border-radius: 8px; margin-bottom: 16px; }
@@ -235,7 +245,7 @@
 
     <div class="slide-container" id="slide-panel-4">
         <h2>🔺 Thermodynamic Energy & The 10% Rule Calculator</h2>
-        <p class="instructions">Select different trophic levels below to run the energy transfer calculation. Watch how much energy is lost as heat as you move up the pyramid tiers.</p>
+        <p class="instructions">Select different trophic levels below to test the active chemical energy transfer calculations across your ecosystem pyramid ecosystem.</p>
         
         <div class="energy-grid">
             <div class="energy-visual">
@@ -245,27 +255,27 @@
             <div class="tier-deck">
                 <div class="tier-card active" id="tc-1" onclick="calc(1)">
                     <span>🌱 Trophic Level 1: Primary Producers</span>
-                    <span class="tier-badge">Slide 12</span>
+                    <span class="energy-stat-badge">100% Base</span>
                 </div>
                 <div class="tier-card" id="tc-2" onclick="calc(2)">
                     <span>🐛 Trophic Level 2: Primary Consumers</span>
-                    <span class="tier-badge">Slide 13</span>
+                    <span class="energy-stat-badge">10% Retained</span>
                 </div>
                 <div class="tier-card" id="tc-3" onclick="calc(3)">
                     <span>🪲 Trophic Level 3: Secondary Consumers</span>
-                    <span class="tier-badge">10% Retained</span>
+                    <span class="energy-stat-badge">1% Retained</span>
                 </div>
                 <div class="tier-card" id="tc-4" onclick="calc(4)">
                     <span>🐦 Trophic Level 4: Tertiary Consumers</span>
-                    <span class="tier-badge">1% Yield</span>
+                    <span class="energy-stat-badge">0.1% Retained</span>
                 </div>
                 <div class="tier-card" id="tc-5" onclick="calc(5)">
-                    <span>🦅 Trophic Level 5: Quaternary / Apex Predators</span>
-                    <span class="tier-badge">Slide 14</span>
+                    <span>🦅 Trophic Level 5: Apex Predators</span>
+                    <span class="energy-stat-badge">0.01% Retained</span>
                 </div>
 
                 <div class="formula-container">
-                    <p id="energy-label" style="font-weight: 700; margin-bottom: 8px; color: #94a3b8;">Active Net Yield (Trophic Level 1):</p>
+                    <p id="energy-label" style="font-weight: 700; margin-bottom: 8px; color: #94a3b8;">Active Energy Yield Available:</p>
                     <div id="math-formula-slot" style="margin: 12px 0;">
                         <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                             <mn>10,000</mn>
@@ -275,6 +285,10 @@
                     <div class="formula-row" style="border-top: 1px solid #334155; padding-top: 10px; margin-top: 10px;">
                         <span style="color: #f87171;">🔥 Dissipated Metabolic Heat Loss (90%):</span>
                         <span id="loss-label" style="color: #f87171; font-weight: 700;">0 kcal</span>
+                    </div>
+                    <div class="formula-row" style="border-bottom:none; padding-top: 4px;">
+                        <span style="color: #38bdf8;">🔄 Real-Time Math Equation Execution:</span>
+                        <span id="equation-expression-label" style="color: #38bdf8; font-weight: 700;">Base Pool</span>
                     </div>
                 </div>
             </div>
@@ -309,13 +323,12 @@
         let currentSlide = 1;
         const totalSlides = 14;
 
-        // Slide Gallery Controller Engine (Handles mixed naming structure cleanly)
+        // Slide Gallery Controller Engine
         function changeSlide(dir) {
             currentSlide += dir;
             if (currentSlide < 1) currentSlide = 1;
             if (currentSlide > totalSlides) currentSlide = totalSlides;
             
-            // Checks if it should load slideX.png or raw X.png depending on your repo distribution
             const imgElement = document.getElementById('main-gallery');
             if (currentSlide >= 11) {
                 imgElement.src = `${currentSlide}.png`;
@@ -393,7 +406,7 @@
             document.getElementById('log').innerHTML = "SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.";
         }
 
-        // Thermodynamic Math Calculation Calculator Core (Corrected to support 5 levels dynamically)
+        // Thermodynamic Calculator (slide references eliminated from interactive card nodes)
         function calc(level) {
             document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
             document.getElementById(`tc-${level}`).classList.add('active');
@@ -402,16 +415,24 @@
             const label = document.getElementById('energy-label');
             const mathFormulaSlot = document.getElementById('math-formula-slot');
             const loss = document.getElementById('loss-label');
+            const equationSlot = document.getElementById('equation-expression-label');
 
             const values = [10000, 1000, 100, 10, 1];
+            const mathEquations = [
+                "Baseline Input Pool",
+                "10,000 kcal × 0.10",
+                "1,000 kcal × 0.10",
+                "100 kcal × 0.10",
+                "10 kcal × 0.10"
+            ];
             
-            // Adjust visualization dynamically targeting your GitHub paths
             if (level === 1) pyramidImg.src = "12.png";
             else if (level === 2) pyramidImg.src = "13.png";
             else if (level === 5) pyramidImg.src = "14.png";
-            else pyramidImg.src = "11.png"; // Default fallback showing general overview pyramid
+            else pyramidImg.src = "11.png";
 
             label.innerText = `Active Net Yield (Trophic Level ${level}):`;
+            equationSlot.innerText = mathEquations[level - 1];
             
             mathFormulaSlot.innerHTML = `
                 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
