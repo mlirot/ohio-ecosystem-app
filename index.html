@@ -137,16 +137,16 @@
         .energy-visual { background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
         .energy-visual img { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .tier-deck { display: flex; flex-direction: column; gap: 10px; }
+        .tier-deck { display: flex; flex-direction: column; gap: 8px; }
         .tier-card { 
-            padding: 16px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center; font-weight: 700; transition: all 0.2s; background: #fff; font-size: 11pt;
+            padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; font-weight: 700; transition: all 0.2s; background: #fff; font-size: 10.5pt;
         }
         .tier-card:hover { border-color: var(--primary); background: var(--primary-light); }
         .tier-card.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); box-shadow: 0 0 0 1px var(--primary); }
-        .tier-badge { background: #1e293b; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 9pt; font-family: monospace; }
+        .tier-badge { background: #1e293b; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 8.5pt; font-family: monospace; }
 
-        .formula-container { background: #1e293b; color: white; padding: 20px; border-radius: 8px; margin-top: 16px; }
+        .formula-container { background: #1e293b; color: white; padding: 18px; border-radius: 8px; margin-top: 12px; }
         .formula-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding: 6px 0; font-family: monospace; }
 
         /* Assessment Quiz Blocks */
@@ -168,7 +168,7 @@
         <h1>Ohio Ecosystem Dynamics</h1>
         <p class="instructions">Use the control dock below to navigate the core content curriculum slides (Slides 1 through 14).</p>
         <div class="gallery-frame">
-            <img src="slide1.png" id="main-gallery" class="gallery-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1280\' height=\'720\' style=\'background:%231e293b;\'><text x=\'50%\' y=\'50%\' fill=\'%23f8fafc\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' text-anchor=\'middle\'>Slide File Loading Context Error: Confirm your image filenames match slide1.png through slide14.png exactly</text></svg>'">
+            <img src="slide1.png" id="main-gallery" class="gallery-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1280\' height=\'720\' style=\'background:%231e293b;\'><text x=\'50%\' y=\'50%\' fill=\'%23f8fafc\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' text-anchor=\'middle\'>Slide File Loading Context Error: Check filename mappings.</text></svg>'">
         </div>
         <div class="controls">
             <button class="btn btn-ghost" onclick="changeSlide(-1)">&larr; Previous Slide</button>
@@ -201,27 +201,27 @@
         <p class="instructions">Click directly on any high-visibility dashed box to remove that organism from the web. Watch the top-down or bottom-up domino effects update instantly.</p>
         
         <div class="sandbox-wrapper">
-            <img src="slide8.png" alt="Ecosystem Canvas Layout" class="sandbox-bg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1000\' height=\'560\' style=\'background:%23cbd5e1;\'><text x=\'50%\' y=\'50%\' fill=\'%231e293b\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'16\' text-anchor=\'middle\'>[Sandbox Background: Please confirm slide8.png is uploaded to your repository]</text></svg>'">
+            <img src="slide4.png" alt="Ecosystem Canvas Layout" class="sandbox-bg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1000\' height=\'560\' style=\'background:%23cbd5e1;\'><text x=\'50%\' y=\'50%\' fill=\'%231e293b\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'16\' text-anchor=\'middle\'>[Sandbox Background: Please confirm slide4.png is uploaded to your repository]</text></svg>'">
             
-            <div class="hotspot" style="top:25%; left:18%; width:8%; height:18%;" onclick="sim('cat', this)" title="Outdoor Cat"></div>
-            <div class="hotspot" style="top:26%; left:33%; width:7%; height:14%;" onclick="sim('bug', this)" title="Stinkbug"></div>
-            <div class="hotspot" style="top:29%; left:47%; width:9%; height:16%;" onclick="sim('cardinal', this)" title="Northern Cardinal"></div>
-            <div class="hotspot" style="top:25%; left:62%; width:8%; height:18%;" onclick="sim('hawk', this)" title="Cooper's Hawk"></div>
-            <div class="hotspot" style="top:28%; left:75%; width:9%; height:18%;" onclick="sim('fox', this)" title="Red Fox"></div>
+            <div class="hotspot" style="top:26%; left:19%; width:8%; height:16%;" onclick="sim('cat', this)" title="Outdoor Cat"></div>
+            <div class="hotspot" style="top:26%; left:34%; width:7%; height:13%;" onclick="sim('bug', this)" title="Stinkbug"></div>
+            <div class="hotspot" style="top:32%; left:48%; width:9%; height:14%;" onclick="sim('cardinal', this)" title="Northern Cardinal"></div>
+            <div class="hotspot" style="top:29%; left:63%; width:8%; height:16%;" onclick="sim('hawk', this)" title="Cooper's Hawk"></div>
+            <div class="hotspot" style="top:32%; left:76%; width:8%; height:16%;" onclick="sim('fox', this)" title="Red Fox"></div>
             
-            <div class="hotspot" style="top:48%; left:14%; width:6%; height:12%;" onclick="sim('fungi', this)" title="Fungi"></div>
-            <div class="hotspot" style="top:80%; left:6%;  width:6%; height:12%;" onclick="sim('bacteria', this)" title="Bacteria"></div>
+            <div class="hotspot" style="top:58%; left:14%; width:6%; height:12%;" onclick="sim('fungi', this)" title="Fungi"></div>
+            <div class="hotspot" style="top:79%; left:6%;  width:6%; height:12%;" onclick="sim('bacteria', this)" title="Bacteria"></div>
             
-            <div class="hotspot" style="top:55%; left:28%; width:8%; height:16%;" onclick="sim('squirrel', this)" title="Gray Squirrel"></div>
-            <div class="hotspot" style="top:55%; left:41%; width:8%; height:14%;" onclick="sim('larva', this)" title="Karner Blue Larva"></div>
-            <div class="hotspot" style="top:62%; left:58%; width:8%; height:16%;" onclick="sim('rabbit', this)" title="Eastern Cottontail"></div>
-            <div class="hotspot" style="top:55%; left:67%; width:7%; height:14%;" onclick="sim('bluejay', this)" title="Bluejay"></div>
+            <div class="hotspot" style="top:54%; left:28%; width:8%; height:15%;" onclick="sim('squirrel', this)" title="Gray Squirrel"></div>
+            <div class="hotspot" style="top:53%; left:41%; width:8%; height:13%;" onclick="sim('larva', this)" title="Karner Blue Caterpillar"></div>
+            <div class="hotspot" style="top:63%; left:58%; width:9%; height:14%;" onclick="sim('rabbit', this)" title="Eastern Cottontail"></div>
+            <div class="hotspot" style="top:59%; left:69%; width:6%; height:14%;" onclick="sim('bluejay', this)" title="Bluejay"></div>
             
-            <div class="hotspot" style="top:73%; left:22%; width:8%; height:12%;" onclick="sim('swallowtail', this)" title="Zebra Swallowtail Larva"></div>
-            <div class="hotspot" style="top:84%; left:30%; width:8%; height:14%;" onclick="sim('pawpaw', this)" title="Pawpaw Plant"></div>
-            <div class="hotspot" style="top:80%; left:43%; width:7%; height:15%;" onclick="sim('lupine', this)" title="Wild Lupine"></div>
-            <div class="hotspot" style="top:75%; left:52%; width:7%; height:12%;" onclick="sim('seeds', this)" title="Buckeye Seeds"></div>
-            <div class="hotspot" style="top:82%; left:65%; width:8%; height:16%;" onclick="sim('berry', this)" title="Elderberry Bush"></div>
+            <div class="hotspot" style="top:71%; left:22%; width:8%; height:12%;" onclick="sim('swallowtail', this)" title="Zebra Swallowtail Caterpillar"></div>
+            <div class="hotspot" style="top:88%; left:31%; width:9%; height:13%;" onclick="sim('pawpaw', this)" title="Pawpaw fruit and leaves"></div>
+            <div class="hotspot" style="top:81%; left:44%; width:8%; height:14%;" onclick="sim('lupine', this)" title="Wild Lupine"></div>
+            <div class="hotspot" style="top:79%; left:54%; width:7%; height:12%;" onclick="sim('seeds', this)" title="Buckeye Seeds"></div>
+            <div class="hotspot" style="top:85%; left:66%; width:8%; height:14%;" onclick="sim('berry', this)" title="Elderberry Bush"></div>
         </div>
 
         <div class="log-box" id="log">SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.</div>
@@ -239,7 +239,7 @@
         
         <div class="energy-grid">
             <div class="energy-visual">
-                <img src="slide11.png" id="energy-img" alt="Thermodynamic Matrix Visualization" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'400\' style=\'background:%23e2e8f0;\'><text x=\'50%\' y=\'50%\' fill=\'%23475569\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\'>Pyramid Overview Slide Missing</text></svg>'">
+                <img src="11.png" id="energy-img" alt="Thermodynamic Matrix Visualization" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'400\' style=\'background:%23e2e8f0;\'><text x=\'50%\' y=\'50%\' fill=\'%23475569\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\'>Pyramid Overview Slide Missing</text></svg>'">
             </div>
             
             <div class="tier-deck">
@@ -252,11 +252,15 @@
                     <span class="tier-badge">Slide 13</span>
                 </div>
                 <div class="tier-card" id="tc-3" onclick="calc(3)">
-                    <span>🐦 Trophic Level 3: Secondary Consumers</span>
-                    <span class="tier-badge">10% Yield</span>
+                    <span>🪲 Trophic Level 3: Secondary Consumers</span>
+                    <span class="tier-badge">10% Retained</span>
                 </div>
                 <div class="tier-card" id="tc-4" onclick="calc(4)">
-                    <span>🦅 Trophic Level 4: Tertiary / Apex Consumers</span>
+                    <span>🐦 Trophic Level 4: Tertiary Consumers</span>
+                    <span class="tier-badge">1% Yield</span>
+                </div>
+                <div class="tier-card" id="tc-5" onclick="calc(5)">
+                    <span>🦅 Trophic Level 5: Quaternary / Apex Predators</span>
                     <span class="tier-badge">Slide 14</span>
                 </div>
 
@@ -305,12 +309,19 @@
         let currentSlide = 1;
         const totalSlides = 14;
 
-        // Slide Gallery Engine Controller
+        // Slide Gallery Controller Engine (Handles mixed naming structure cleanly)
         function changeSlide(dir) {
             currentSlide += dir;
             if (currentSlide < 1) currentSlide = 1;
             if (currentSlide > totalSlides) currentSlide = totalSlides;
-            document.getElementById('main-gallery').src = `slide${currentSlide}.png`;
+            
+            // Checks if it should load slideX.png or raw X.png depending on your repo distribution
+            const imgElement = document.getElementById('main-gallery');
+            if (currentSlide >= 11) {
+                imgElement.src = `${currentSlide}.png`;
+            } else {
+                imgElement.src = `slide${currentSlide}.png`;
+            }
             document.getElementById('slide-count-txt').innerText = `Slide ${currentSlide} / ${totalSlides}`;
         }
 
@@ -343,30 +354,29 @@
             element.classList.add('dead');
             const log = document.getElementById('log');
 
-            // Select dependency nodes to show cascade impacts visually
-            const larvaNode = document.querySelector('[title="Karner Blue Larva"]');
+            const larvaNode = document.querySelector('[title="Karner Blue Caterpillar"]');
             const bugNode = document.querySelector('[title="Stinkbug"]');
-            const birdNode = document.querySelector('[title="Cardinal"]');
-            const swallowtailNode = document.querySelector('[title="Zebra Swallowtail Larva"]');
+            const birdNode = document.querySelector('[title="Northern Cardinal"]');
+            const swallowtailNode = document.querySelector('[title="Zebra Swallowtail Caterpillar"]');
             const rabbitNode = document.querySelector('[title="Eastern Cottontail"]');
             const squirrelNode = document.querySelector('[title="Gray Squirrel"]');
             const seedsNode = document.querySelector('[title="Buckeye Seeds"]');
             const berryNode = document.querySelector('[title="Elderberry Bush"]');
-            const pawpawNode = document.querySelector('[title="Pawpaw Plant"]');
+            const pawpawNode = document.querySelector('[title="Pawpaw fruit and leaves"]');
             const lupineNode = document.querySelector('[title="Wild Lupine"]');
 
             if (type === 'lupine') {
                 larvaNode.classList.add('affected');
                 bugNode.classList.add('affected');
                 birdNode.classList.add('affected');
-                log.innerHTML = "<strong>⚠️ CRITICAL BOTTOM-UP CRASH:</strong> Removing Wild Lupine instantly starves the specialist Karner Blue Larva. Without them, Stinkbugs lose a primary food source, which destabilizes Northern Cardinal counts.";
+                log.innerHTML = "<strong>⚠️ CRITICAL BOTTOM-UP CRASH:</strong> Removing Wild Lupine instantly starves the specialist Karner Blue Caterpillar. Without them, Stinkbugs lose a primary food source, which destabilizes Northern Cardinal counts.";
             } else if (type === 'pawpaw') {
                 swallowtailNode.classList.add('affected');
-                log.innerHTML = "<strong>🔬 SPECIALIST SHUCK:</strong> Pawpaw is the exclusive host plant for the Zebra Swallowtail Larva. Stripping it eliminates this butterfly species from the local forest plot.";
-            } else if (type === 'hawk' || type === 'fox') {
+                log.innerHTML = "<strong>🔬 SPECIALIST SHUCK:</strong> Pawpaw fruit and leaves are the exclusive host plant for the Zebra Swallowtail Caterpillar. Stripping it eliminates this butterfly species from the local forest plot.";
+            } else if (type === 'hawk' || type === 'fox' || type === 'cat') {
                 rabbitNode.classList.add('affected');
                 squirrelNode.classList.add('affected');
-                log.innerHTML = "<strong>⚠️ TOP-DOWN TROPHIC CASCADE:</strong> Displacing apex predators breaks down population control limits. Herbivores (Rabbits, Squirrels) experience rapid growth, leading to overgrazing of native seedlings.";
+                log.innerHTML = "<strong>⚠️ TOP-DOWN TROPHIC CASCADE:</strong> Displacing high-level predators breaks down population control limits. Herbivores (Rabbits, Squirrels) experience rapid growth, leading to overgrazing of native seedlings.";
             } else if (type === 'fungi' || type === 'bacteria') {
                 pawpawNode.classList.add('affected');
                 lupineNode.classList.add('affected');
@@ -383,7 +393,7 @@
             document.getElementById('log').innerHTML = "SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.";
         }
 
-        // Thermodynamic Math Calculation Calculator Core
+        // Thermodynamic Math Calculation Calculator Core (Corrected to support 5 levels dynamically)
         function calc(level) {
             document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
             document.getElementById(`tc-${level}`).classList.add('active');
@@ -393,13 +403,16 @@
             const mathFormulaSlot = document.getElementById('math-formula-slot');
             const loss = document.getElementById('loss-label');
 
-            const values = [10000, 1000, 100, 10];
-            const images = ["slide12.png", "slide13.png", "slide11.png", "slide14.png"];
+            const values = [10000, 1000, 100, 10, 1];
             
-            pyramidImg.src = images[level - 1];
+            // Adjust visualization dynamically targeting your GitHub paths
+            if (level === 1) pyramidImg.src = "12.png";
+            else if (level === 2) pyramidImg.src = "13.png";
+            else if (level === 5) pyramidImg.src = "14.png";
+            else pyramidImg.src = "11.png"; // Default fallback showing general overview pyramid
+
             label.innerText = `Active Net Yield (Trophic Level ${level}):`;
             
-            // Render calculations with proper formatting
             mathFormulaSlot.innerHTML = `
                 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
                     <mn>${values[level - 1].toLocaleString()}</mn>
@@ -411,16 +424,16 @@
             loss.innerText = `${calculatedLoss.toLocaleString()} kcal`;
         }
 
-        // Complete Curriculum Question Assessment Bank
+        // Assessment Bank
         const questionPool = [
-            { q: "If Wild Lupine (Producer) is fully cleared from a section, why does the Karner Blue Larva population crash?", a: 1, o: ["It learns to hunt high-level hawk lines", "It is a specialist herbivore that depends entirely on lupine for nutrition", "It mutates into a decomposer matrix"] },
+            { q: "If Wild Lupine (Producer) is fully cleared from a section, why does the Karner Blue Caterpillar population crash?", a: 1, o: ["It learns to hunt high-level hawk lines", "It is a specialist herbivore that depends entirely on lupine for nutrition", "It mutates into a decomposer matrix"] },
             { q: "According to thermodynamic principles, what percent of net biomass energy is LOST at each consecutive tier transfer?", a: 0, o: ["90%", "10%", "50%"] },
             { q: "Which ecosystem member occupies the niche of a Secondary Consumer in your slide materials?", a: 2, o: ["Buckeye Seeds", "Wild Lupine", "Stinkbug"] },
             { q: "In a 'Top-Down' food web cascade, structural collapse sequences usually originate from which tier?", a: 0, o: ["The Apex Predator tier", "The Primary Producer base layer", "The Soil Decomposer group"] },
-            { q: "If the base producer layer generates 10,000 kcal of net energy, how much remains accessible at Level 4?", a: 1, o: ["100 kcal", "10 kcal", "1,000 kcal"] },
+            { q: "If the base producer layer generates 10,000 kcal of net energy, how much remains accessible at Level 5?", a: 1, o: ["10 kcal", "1 kcal", "100 kcal"] },
             { q: "What is the primary thermodynamic driving engine powering this entire food web system?", a: 2, o: ["Soil mineral decay cycles", "Metabolic heat loops", "Solar radiation caught through photosynthesis"] },
             { q: "Bacteria and Fungi are classified under what functional biological categorization?", a: 0, o: ["Decomposers / Detritivores", "Primary Autotroph Producers", "Tertiary Apex Consumers"] },
-            { q: "Which animal acts as an Apex Predator in your web?", a: 1, o: ["Bluejay", "Cooper's Hawk", "Stinkbug"] },
+            { q: "Which animal acts as a Quaternary Consumer in your web?", a: 1, o: ["Bluejay", "Outdoor Cat", "Stinkbug"] },
             { q: "If decomposers are completely removed from an ecosystem, what is the direct long-term consequence?", a: 0, o: ["Nutrient recycling stalls, weakening the primary producer base layer", "Producers grow at double their normal rate", "Animals stop losing energy as heat"] },
             { q: "What form does the 90% of lost energy take as it moves up through the trophic pyramid tiers?", a: 2, o: ["It turns into new mineral resources", "It is stored inside the consumer's skeletal structure", "It is dissipated into the environment as metabolic heat and waste"] }
         ];
@@ -429,7 +442,6 @@
         let userChoices = {};
 
         function loadQuiz() {
-            // Pick 10 random questions from the question bank
             chosenQuizSet = questionPool.sort(() => 0.5 - Math.random()).slice(0, 10);
             const container = document.getElementById('quiz-mastery-deck');
             
@@ -446,13 +458,11 @@
         function selectOption(qIdx, oIdx) {
             const block = document.getElementById(`q-block-${qIdx}`);
             block.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
-            
             userChoices[qIdx] = oIdx;
             document.getElementById(`opt-${qIdx}-${oIdx}`).classList.add('selected');
         }
 
         function gradeQuiz() {
-            // Check for unselected answers
             let incomplete = false;
             for (let i = 0; i < chosenQuizSet.length; i++) {
                 if (userChoices[i] === undefined) {
@@ -472,7 +482,6 @@
             chosenQuizSet.forEach((item, idx) => {
                 const userSelection = userChoices[idx];
                 const block = document.getElementById(`q-block-${idx}`);
-                
                 block.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
                 
                 if (userSelection === item.a) {
@@ -485,8 +494,6 @@
             });
 
             const finalPercent = Math.round((correctCount / chosenQuizSet.length) * 100);
-            
-            // Hide the question deck and show the scores
             document.getElementById('quiz-mastery-deck').style.display = "none";
             document.getElementById('btn-submit-quiz').style.display = "none";
             
