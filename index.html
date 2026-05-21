@@ -3,380 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ohio Ecosystems: Chains, Webs & Collapse</title>
+    <title>Ohio Ecosystem Dynamics: Food Chains & Webs</title>
     <style>
         :root {
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-color: #2c3e50;
-            --primary: #2e7d32;
-            --primary-hover: #1b5e20;
-            --accent-red: #c62828;
+            --bg-main: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #7c5e43; /* Warm earth tone matching your slides */
+            --primary-light: #f5efe6;
+            --primary-dark: #4a3525;
+            --accent-red: #b91c1c;
+            --accent-red-light: #fee2e2;
+            --accent-amber: #b45309;
+            --border: #e2e8f0;
+            --radius-md: 8px;
+            --radius-lg: 12px;
         }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 24px 16px;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 960px;
             margin: 0 auto;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--surface);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
         }
 
-        h1, h2, h3 {
-            color: var(--primary);
+        header {
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 16px;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background-color: #e0e0e0;
-            border-radius: 4px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
+        h1 { color: var(--primary-dark); font-size: 24pt; font-weight: 700; margin-bottom: 4px; }
+        p.subtitle { color: var(--text-muted); font-size: 11pt; }
 
-        .progress-fill {
-            height: 100%;
-            width: 20%;
-            background-color: var(--primary);
-            transition: width 0.4s ease;
+        .tracker {
+            display: table; width: 100%; table-layout: fixed; margin-bottom: 32px; border-collapse: separate; border-spacing: 4px;
         }
+        .tracker-step { display: table-cell; background: var(--border); height: 8px; border-radius: 4px; }
+        .tracker-step.active { background: var(--primary); }
+        .tracker-step.completed { background: var(--primary-dark); }
 
-        .app-section {
-            display: none;
-        }
+        .app-section { display: none; }
+        .app-section.active { display: block; }
+        h2 { font-size: 16pt; color: var(--primary-dark); margin-bottom: 12px; border-left: 5px solid var(--primary); padding-left: 12px; }
+        .instructions { color: var(--text-muted); font-size: 10.5pt; margin-bottom: 20px; }
 
-        .app-section.active {
-            display: block;
-        }
+        .slide-gallery { background: #1e1e1e; border-radius: var(--radius-md); padding: 16px; text-align: center; margin-bottom: 20px; }
+        .slide-frame { max-width: 100%; height: auto; max-height: 480px; border-radius: 4px; display: block; margin: 0 auto; }
+        .slide-controls { margin-top: 16px; }
+        .gallery-btn { background: #4a4a4a; color: #fff; border: none; padding: 8px 16px; font-size: 10pt; border-radius: 4px; cursor: pointer; margin: 0 8px; font-weight: 600; }
+        .gallery-btn:hover { background: #626262; }
+        .slide-counter { color: #aaa; font-size: 10pt; font-family: monospace; display: inline-block; min-width: 80px; }
 
-        /* Canva Placeholder */
-        .canva-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 56.2500%;
-            box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16);
-            margin-top: 1.6em;
-            margin-bottom: 0.9em;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #e5e5e5;
-        }
+        .sandbox-wrapper { position: relative; width: 100%; max-width: 720px; margin: 0 auto 24px auto; border: 2px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: #f1f5f9; }
+        .sandbox-bg { display: block; width: 100%; height: auto; }
 
-        .canva-placeholder-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-Concentrate, -50%);
-            text-align: center;
-            width: 100%;
-            color: #666;
-        }
+        .node-target { position: absolute; cursor: pointer; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px dashed rgba(124,94,67,0.4); transform: translate(-50%, -50%); transition: all 0.2s; }
+        .node-target:hover { background: rgba(124,94,67,0.2); border-color: var(--primary); }
+        .node-target.dead::after { content: "❌"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24pt; pointer-events: none; }
+        .node-target.affected::after { content: "⚠️"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20pt; pointer-events: none; animation: bounce 1s infinite alternate; }
 
-        /* Eco-Simulator Layout */
-        .simulator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
+        @keyframes bounce { 0% { transform: translate(-50%, -40%); } 100% { transform: translate(-50%, -60%); } }
 
-        .organism-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #fff;
-        }
+        /* Coordinates designed to cover your Slide 4 Web elements */
+        #node-lupine { width: 12%; height: 12%; top: 80%; left: 50%; }
+        #node-larva { width: 12%; height: 12%; top: 55%; left: 33%; }
+        #node-stinkbug { width: 12%; height: 12%; top: 55%; left: 63%; }
+        #node-cardinal { width: 12%; height: 12%; top: 30%; left: 50%; }
+        #node-hawk { width: 12%; height: 12%; top: 15%; left: 70%; }
 
-        .organism-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary);
-        }
+        .dashboard-log { background: #1e293b; color: #f8fafc; padding: 16px; border-radius: var(--radius-md); font-family: monospace; font-size: 10pt; min-height: 80px; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+        .option-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; font-size: 11pt; }
+        .option-card:hover { border-color: var(--primary); background: #fdfbf7; }
+        .option-card.correct { background: #e2f0d9; border-color: #70ad47; color: #385723; font-weight: 600; }
+        .option-card.incorrect { background: var(--accent-red-light); border-color: var(--accent-red); color: var(--accent-red); }
+        .feedback-box { padding: 12px 16px; border-radius: var(--radius-md); margin-top: 12px; font-weight: 600; display: none; }
 
-        .organism-card.dead {
-            background-color: #ffebee;
-            border-color: var(--accent-red);
-            opacity: 0.6;
-        }
+        .action-row { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); text-align: right; }
+        .btn-action { background: var(--primary); color: #fff; border: none; padding: 12px 24px; font-size: 11pt; font-weight: 600; border-radius: var(--radius-md); cursor: pointer; transition: background 0.2s; }
+        .btn-action:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #64748b; margin-right: 8px; }
+        .btn-secondary:hover { background: #475569; }
 
-        .organism-card.affected {
-            background-color: #fff8e1;
-            border-color: #ffb300;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-
-        .badge {
-            display: inline-block;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-        .producer { background: #e8f5e9; color: #2e7d32; }
-        .consumer { background: #e3f2fd; color: #1565c0; }
-        .apex { background: #ede7f6; color: #5e35b1; }
-
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 20px;
-        }
-
-        .btn:hover { background-color: var(--primary-hover); }
-        
-        .quiz-option {
-            display: block;
-            background: #f8f9fa;
-            border: 1px solid #ced4da;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .quiz-option:hover { background: #e9ecef; }
-        .correct { background: #c8e6c9 !important; border-color: #81c784; }
-        .incorrect { background: #ffcdd2 !important; border-color: #e57373; }
-        
-        #log-box {
-            background: #333;
-            color: #fff;
-            padding: 15px;
-            border-radius: 6px;
-            font-family: monospace;
-            margin-top: 15px;
-            min-height: 60px;
-        }
+        .quiz-block { background: #f8fafc; border: 1px solid var(--border); padding: 20px; border-radius: var(--radius-md); margin-bottom: 24px; }
+        .quiz-question-text { font-weight: 600; font-size: 12pt; margin-bottom: 14px; color: #0f172a; }
+        .quiz-radio-option { display: block; padding: 10px; background: #fff; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; cursor: pointer; }
+        .quiz-radio-option:hover { background: #f1f5f9; }
+        .quiz-radio-option input { margin-right: 10px; }
+        .score-banner { background: #fdfbf7; border: 2px dashed var(--primary); border-radius: var(--radius-lg); padding: 24px; text-align: center; margin-bottom: 24px; }
+        .score-val { font-size: 36pt; font-weight: 800; color: var(--primary-dark); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="progress-bar">
-        <div class="progress-fill" id="progress"></div>
+    <header>
+        <h1>Ohio Ecosystem Dynamics</h1>
+        <p class="subtitle">Student Unit: Food Chains, Webs, & Ecological Disruptions</p>
+    </header>
+
+    <div class="tracker" id="tracker-bar">
+        <div class="tracker-step active"></div>
+        <div class="tracker-step"></div>
+        <div class="tracker-step"></div>
+        <div class="tracker-step"></div>
+        <div class="tracker-step"></div>
     </div>
 
-    <div id="step-1" class="app-section active">
-        <h2>🔬 Lesson: Ohio Ecosystem Dynamics</h2>
-        <p>Review the presentation below covering trophic levels, energy flow, and food webs within local Ohio biomes.</p>
+    <div id="panel-1" class="app-section active">
+        <h2>🐛 Part 1: Instructional Deck</h2>
+        <p class="instructions">Review your lesson slides below. Pay close attention to the specific relationships in our Ohio habitat chain.</p>
         
-        <div class="canva-container">
-            <iframe allowfullscreen="allowfullscreen" scrolling="no" class="canva-frame" style="position:absolute; width:100%; height:100%; top:0; left:0; border:none; padding:0;margin:0;"
-                src="https://www.canva.com/design/DAHKIuOukoA/HpfxDa9XxnBfgMfjB4V6_A/view">
-            </iframe>
-        </div>
-
-        <button class="btn" onclick="navigateTo(2)">Take Knowledge Check ➔</button>
-    </div>
-
-    <div id="step-2" class="app-section">
-        <h2>⚡ Concept Check: Energy Flow</h2>
-        <p><strong>Question:</strong> In an Ohio deciduous forest food web, arrows point from a primary producer (like a White Oak Tree) to a primary consumer (like a White-tailed Deer). What does this arrow strictly track?</p>
-        
-        <div class="quiz-option" onclick="checkMidpoint(this, false)">A) The physical movement and migration patterns of organisms.</div>
-        <div class="quiz-option" onclick="checkMidpoint(this, true)">B) The directional transfer of chemical energy and biomass up trophic levels.</div>
-        <div class="quiz-option" onclick="checkMidpoint(this, false)">C) The predatory dominance of one species over another.</div>
-        
-        <div id="midpoint-feedback" style="margin-top:15px; font-weight:bold;"></div>
-        <button class="btn" id="next-to-sim" style="display:none;" onclick="navigateTo(3)">Advance to Ecosystem Simulator ➔</button>
-    </div>
-
-    <div id="step-3" class="app-section">
-        <h2>🌲 Interactive Sandbox: Broken Links</h2>
-        <p>Click on an Ohio woodland organism to simulate a <strong>trophic cascade</strong> or habitat destruction event. See how the ecosystem balance shifts.</p>
-        
-        <div class="simulator-grid">
-            <div class="organism-card" id="card-oak" onclick="simulateCollapse('oak')">
-                <h3>White Oak</h3>
-                <span class="badge producer">Producer</span>
-            </div>
-            <div class="organism-card" id="card-mouse" onclick="simulateCollapse('mouse')">
-                <h3>Wood Mouse</h3>
-                <span class="badge consumer">Primary Consumer</span>
-            </div>
-            <div class="organism-card" id="card-owl" onclick="simulateCollapse('owl')">
-                <h3>Barred Owl</h3>
-                <span class="badge consumer">Secondary Consumer</span>
-            </div>
-            <div class="organism-card" id="card-coyote" onclick="simulateCollapse('coyote')">
-                <h3>Coyote</h3>
-                <span class="badge apex">Apex Predator</span>
+        <div class="slide-gallery">
+            <img src="slide1.png" alt="Ecosystem Slides" class="slide-frame" id="gallery-canvas" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'450\' style=\'background:%231e1e1e;\'><text x=\'50%\' y=\'50%\' fill=\'%23aaa\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\'>Slide Image Missing: Place [slide1.png] in this folder</text></svg>'">
+            <div class="slide-controls">
+                <button class="gallery-btn" onclick="shiftSlide(-1)">◀ Prev</button>
+                <span class="slide-counter" id="gallery-idx">Slide 1 / 10</span>
+                <button class="gallery-btn" onclick="shiftSlide(1)">Next ▶</button>
             </div>
         </div>
 
-        <h4>Ecosystem Status Log:</h4>
-        <div id="log-box">Ecosystem is currently balanced. Click an organism above to remove it.</div>
-
-        <button class="btn" style="background:#6c757d;" onclick="resetSim()">Reset Ecosystem</button>
-        <button class="btn" onclick="navigateTo(4)">Proceed to Final Mastery Quiz ➔</button>
+        <div class="action-row">
+            <button class="btn-action" onclick="shiftSection(2)">Advance to Knowledge Check ➔</button>
+        </div>
     </div>
 
-    <div id="step-4" class="app-section">
-        <h2>🎓 Final Mastery Exam</h2>
-        <div id="quiz-container">
-            </div>
-        <button class="btn" id="submit-quiz-btn" onclick="gradeQuiz()">Grade Quiz</button>
+    <div id="panel-2" class="app-section">
+        <h2>⚡ Midpoint Checkpoint: Trophic Roles</h2>
+        <p class="instructions">Verify your understanding of our Ohio food chain roles before moving into the simulation sandbox.</p>
+        
+        <div class="quiz-block" style="background:#fff; border:none; padding:0;">
+            <p class="quiz-question-text">Q: Based on your slides, how are the Karner Blue Butterfly Larva and the Stink Bug related in this food chain ecosystem?</p>
+            
+            <div class="option-card" onclick="verifyCheckpoint(this, false)">A) Both are primary producers that use photosynthesis to generate baseline biomass energy.</div>
+            <div class="option-card" onclick="verifyCheckpoint(this, true)">B) The Larva acts as a primary consumer (herbivore) on Wild Lupine, while the Stink Bug acts as a secondary consumer by feeding on the larva.</div>
+            <div class="option-card" onclick="verifyCheckpoint(this, false)">C) The Stink Bug hunts the Northern Cardinal to protect the butterfly larva population.</div>
+            
+            <div class="feedback-box" id="checkpoint-feedback"></div>
+        </div>
+
+        <div class="action-row">
+            <button class="btn-action" id="gate-to-sim" style="display:none;" onclick="shiftSection(3)">Unlock Interactive Collapse Engine ➔</button>
+        </div>
     </div>
 
-    <div id="step-5" class="app-section">
-        <h2>📊 Performance Analysis</h2>
-        <div id="results-display"></div>
-        <button class="btn" onclick="restartApp()">Restart Module</button>
+    <div id="panel-3" class="app-section">
+        <h2>🕸️ Part 2: Trophic Collapse Sandbox (Slide 4 Ecosystem)</h2>
+        <p class="instructions">Click directly on any wildlife niche block below (mapped exactly to your Slide 4 diagram) to break that ecological link and see what happens.</p>
+        
+        <div class="sandbox-wrapper">
+            <img src="slide4.png" alt="Ohio Food Web Layout" class="sandbox-bg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'720\' height=\'400\' style=\'background:%23e2e8f0;\'><text x=\'50%\' y=\'50%\' fill=\'%23475569\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\'>[Place a copy of slide4.png here to serve as the background interactive canvas]</text></svg>'">
+            
+            <div class="node-target" id="node-lupine" title="Wild Lupine" onclick="triggerCascade('lupine')"></div>
+            <div class="node-target" id="node-larva" title="Karner Blue Larva" onclick="triggerCascade('larva')"></div>
+            <div class="node-target" id="node-stinkbug" title="Stink Bug" onclick="triggerCascade('stinkbug')"></div>
+            <div class="node-target" id="node-cardinal" title="Northern Cardinal" onclick="triggerCascade('cardinal')"></div>
+            <div class="node-target" id="node-hawk" title="Red-tailed Hawk" onclick="triggerCascade('hawk')"></div>
+        </div>
+
+        <h3 style="font-size:11pt; text-transform:uppercase; margin-bottom:6px; color:var(--text-muted);">Real-Time Ecological Assessment Log:</h3>
+        <div class="dashboard-log" id="sim-logger">
+            SYSTEM STATUS: Dynamic equilibrium achieved. Select any structural organism coordinate link in the schematic map canvas above to isolate or fracture system performance.
+        </div>
+
+        <div class="action-row">
+            <button class="btn-action btn-secondary" onclick="clearSim()">Reset System Balance</button>
+            <button class="btn-action" onclick="shiftSection(4)">Generate Final Exam ➔</button>
+        </div>
+    </div>
+
+    <div id="panel-4" class="app-section">
+        <h2>🎓 Part 3: Cumulative Content Mastery Assessment</h2>
+        <p class="instructions">Answer the following questions selected at random from our class biology bank.</p>
+        <form id="mastery-quiz-form"><div id="quiz-injector-deck"></div></form>
+        <div class="action-row">
+            <button class="btn-action" onclick="evaluateMasteryMetrics()">Submit Exam</button>
+        </div>
+    </div>
+
+    <div id="panel-5" class="app-section">
+        <h2>📊 Synthesis & Metric Analysis</h2>
+        <div class="score-banner">
+            <p style="font-weight:600; color:var(--text-muted); text-transform:uppercase;">Exam Score</p>
+            <div class="score-val" id="score-metric-output">0%</div>
+            <p id="score-verbal-rating" style="margin-top:8px; font-weight:600;"></p>
+        </div>
+        <div id="breakdown-critique-box" style="margin-bottom:20px;"></div>
+        <div class="action-row">
+            <button class="btn-action" onclick="rebootSystemModule()">Restart Module</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // App Navigation Logic
-    function navigateTo(step) {
-        document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
-        document.getElementById(`step-${step}`).classList.add('active');
-        
-        // Progress bar conversion
-        const totalSteps = 5;
-        document.getElementById('progress').style.width = `${(step / totalSteps) * 100}%`;
+    let activeSlideIndex = 1;
+    const totalSlidesCount = 10; // Updated to match your presentation count
 
-        if(step === 4) { renderMasteryQuiz(); }
+    function shiftSlide(direction) {
+        activeSlideIndex += direction;
+        if (activeSlideIndex < 1) activeSlideIndex = totalSlidesCount;
+        if (activeSlideIndex > totalSlidesCount) activeSlideIndex = 1;
+        document.getElementById('gallery-canvas').src = `slide${activeSlideIndex}.png`;
+        document.getElementById('gallery-idx').innerText = `Slide ${activeSlideIndex} / ${totalSlidesCount}`;
     }
 
-    // Midpoint Check Engine
-    function checkMidpoint(element, isCorrect) {
-        const feedback = document.getElementById('midpoint-feedback');
-        if(isCorrect) {
+    function shiftSection(targetPanelId) {
+        document.querySelectorAll('.app-section').forEach(p => p.classList.remove('active'));
+        document.getElementById(`panel-${targetPanelId}`).classList.add('active');
+        const trackingNodes = document.querySelectorAll('.tracker-step');
+        trackingNodes.forEach((node, idx) => {
+            node.className = 'tracker-step';
+            if (idx + 1 < targetPanelId) node.classList.add('completed');
+            if (idx + 1 === targetPanelId) node.classList.add('active');
+        });
+        if (targetPanelId === 4) compileMasteryExamDeck();
+    }
+
+    function verifyCheckpoint(element, isCorrect) {
+        const feedback = document.getElementById('checkpoint-feedback');
+        element.parentElement.querySelectorAll('.option-card').forEach(c => c.className = 'option-card');
+        if (isCorrect) {
             element.classList.add('correct');
-            feedback.innerHTML = "🎯 Correct! Energy flows from the eaten to the eater.";
-            feedback.style.color = "var(--primary)";
-            document.getElementById('next-to-sim').style.display = 'inline-block';
+            feedback.style.display = 'block'; feedback.style.background = '#e2f0d9'; feedback.style.color = '#385723';
+            feedback.innerText = "🎯 Correct! Wild Lupine (Producer) ➔ Karner Blue Larva (Primary Consumer) ➔ Stink Bug (Secondary Consumer).";
+            document.getElementById('gate-to-sim').style.display = 'inline-block';
         } else {
             element.classList.add('incorrect');
-            feedback.innerHTML = "❌ Try again. Think about what organisms pass along when consumed.";
-            feedback.style.color = "var(--accent-red)";
+            feedback.style.display = 'block'; feedback.style.background = 'var(--accent-red-light)'; feedback.style.color = 'var(--accent-red)';
+            feedback.innerText = "❌ Not quite. Remember to track what eats what based on your slide definitions!";
         }
     }
 
-    // Simulator Core Engine
-    function simulateCollapse(target) {
-        resetSim();
-        const oak = document.getElementById('card-oak');
-        const mouse = document.getElementById('card-mouse');
-        const owl = document.getElementById('card-owl');
-        const coyote = document.getElementById('card-coyote');
-        const log = document.getElementById('log-box');
+    function triggerCascade(isolatedKey) {
+        clearSim();
+        const logger = document.getElementById('sim-logger');
+        const lupine = document.getElementById('node-lupine');
+        const larva = document.getElementById('node-larva');
+        const stinkbug = document.getElementById('node-stinkbug');
+        const cardinal = document.getElementById('node-cardinal');
+        const hawk = document.getElementById('node-hawk');
 
-        if(target === 'oak') {
-            oak.classList.add('dead');
-            mouse.classList.add('affected');
-            owl.classList.add('affected');
-            coyote.classList.add('affected');
-            log.innerHTML = "⚠️ BOTTOM-UP COLLAPSE: Removing the primary producer cuts off all biomass creation. Trophic levels 2, 3, and 4 face starvation.";
-        } else if(target === 'coyote') {
-            coyote.classList.add('dead');
-            mouse.classList.add('affected');
-            oak.classList.add('affected');
-            log.innerHTML = "⚠️ TOP-DOWN TROPHIC CASCADE: Removing the apex predator leaves primary consumers unchecked. Mouse populations surge, overgrazing the White Oak saplings.";
-        } else if(target === 'mouse') {
-            mouse.classList.add('dead');
-            owl.classList.add('affected');
-            coyote.classList.add('affected');
-            log.innerHTML = "⚠️ INTERMEDIATE LINK BROKEN: Secondary predators lose their direct energy line. Predators must switch alternative prey or decline.";
-        } else if(target === 'owl') {
-            owl.classList.add('dead');
-            log.innerHTML = "⚠️ Apex predators/omnivores scale back, but alternative pathways in a complex food web minimize full collapse.";
+        switch(isolatedKey) {
+            case 'lupine':
+                lupine.classList.add('dead'); larva.classList.add('affected'); stinkbug.classList.add('affected'); cardinal.classList.add('affected'); hawk.classList.add('affected');
+                logger.innerHTML = "⚠️ CRITICAL PRODUCER COLLAPSE: Removing Wild Lupine removes the foundational energy source for the entire chain. Karner Blue larvae starve immediately, initiating a total bottom-up ecosystem collapse.";
+                break;
+            case 'larva':
+                larva.classList.add('dead'); stinkbug.classList.add('affected'); cardinal.classList.add('affected');
+                logger.innerHTML = "⚠️ PRIMARY CONSUMER BROKEN LINK: Without the Karner Blue Larva, Stink Bugs lose their principal food supply. This calorie deficiency ripples upward, putting stress on local Northern Cardinals.";
+                break;
+            case 'stinkbug':
+                stinkbug.classList.add('dead'); cardinal.classList.add('affected');
+                logger.innerHTML = "⚠️ INTERMEDIATE LINK BROKEN: Stripping out the Stink Bug forces the Northern Cardinal to look elsewhere for food. If no alternative bugs are present in the web, local bird counts will drop.";
+                break;
+            case 'cardinal':
+                cardinal.classList.add('dead'); hawk.classList.add('affected'); stinkbug.classList.add('affected');
+                logger.innerHTML = "⚠️ TROPHIC DISRUPTION: If disease removes the Northern Cardinal, Stink Bug populations will initially expand rapidly because their predator is gone. Conversely, Red-tailed Hawks and Feral Cats lose an essential prey target.";
+                break;
+            case 'hawk':
+                hawk.classList.add('dead'); cardinal.classList.add('affected');
+                logger.innerHTML = "⚠️ LOSS OF APEX PREDATOR (Top-Down Effects): Removing apex predators disrupts population controls. Medium-sized predators or omnivores (like birds or feral cats) face altered competition, shifting ecosystem balance.";
+                break;
         }
     }
 
-    function resetSim() {
-        document.querySelectorAll('.organism-card').forEach(c => c.className = 'organism-card');
-        document.getElementById('log-box').innerHTML = "Ecosystem is currently balanced. Click an organism above to remove it.";
+    function clearSim() {
+        document.querySelectorAll('.node-target').forEach(n => n.className = 'node-target');
+        document.getElementById('sim-logger').innerHTML = "SYSTEM STATUS: Dynamic equilibrium achieved. Select any structural organism coordinate link in the schematic map canvas above to isolate or fracture system performance.";
     }
 
-    // Mastery Quiz Array Data (9th/10th Grade Standard)
-    const quizQuestions = [
-        {
-            q: "An invasive species like the Zebra Mussel is introduced into Lake Erie. It filters out almost all phytoplankton (microscopic algae). What is the cascading impact on the food web?",
-            options: [
-                "It benefits top-tier predators by making the water clearer.",
-                "It causes a bottom-up resource collapse, starving secondary consumers like Yellow Perch.",
-                "It has zero net effect because secondary consumers adapt to eat mussels immediately."
-            ],
-            answer: 1
-        },
-        {
-            q: "If a blight diseases eliminates 90% of the primary producers in an Ohio marshland, what happens to the total available energy across subsequent trophic levels?",
-            options: [
-                "The energy at higher levels scales upward to compensate.",
-                "Available energy collapses significantly across all higher levels because of the 10% rule of energy transfer.",
-                "Decomposers become the new primary producers."
-            ],
-            answer: 1
-        }
+    // 30 High Quality Grade 9-10 Focused Questions 
+    const masterQuestionPool = [
+        { q: "Based on your slides, which organism functions as the Primary Producer?", options: ["Karner Blue Larva", "Wild Lupine", "Stink Bug", "Northern Cardinal"], a: 1 },
+        { q: "In the presented food chain, the Stink Bug occupies which specific trophic level?", options: ["Primary Producer", "Primary Consumer", "Secondary Consumer", "Apex Predator"], a: 2 },
+        { q: "If all Wild Lupine is cleared from an Ohio field, what type of ecological collapse occurs?", options: ["Top-down trophic cascade", "Bottom-up resource collapse", "Decomposer cycling spike"], a: 1 },
+        { q: "What do the arrows in your Slide 4 food web directly represent?", options: ["The structural size of the animals", "The flow of chemical energy from the organism eaten to the organism eating it", "The physical migration paths of Ohio birds"], a: 1 },
+        { q: "According to the 10% rule of ecological energy transfer, if Wild Lupine contains 10,000 kcal of energy, how much energy is available to the larvae that eat it?", options: ["10,000 kcal", "1,000 kcal", "100 kcal", "10 kcal"], a: 1 },
+        { q: "Why is the Red-tailed Hawk classified as a Quaternary Consumer or Apex Predator in your slides?", options: ["It makes its own food from the sun", "It is at the top of the chain and is not regularly preyed upon by other animals", "It only eats plants"], a: 1 },
+        { q: "If a disease removes the Northern Cardinal from this ecosystem, what is a direct short-term consequence?", options: ["Stink bug populations will spike because their predator is gone", "Wild Lupine will stop growing", "Hawks will immediately double their population"], a: 0 },
+        { q: "The Karner Blue Butterfly Larva eats only Wild Lupine. This makes it an ecological:", options: ["Specialist Herbivore", "Generalist Omnivore", "Apex Carnivore"], a: 0 },
+        { q: "Which tier of an ecological pyramid built from your slides would have the SMALLEST total biomass?", options: ["The Wild Lupine level", "The Karner Blue Larva level", "The Red-tailed Hawk level"], a: 2 },
+        { q: "What form does the 'lost 90%' of energy take as it moves up from the Lupine to the Larva?", options: ["It is destroyed completely", "It is lost to the environment as metabolic heat and waste products", "It turns into soil minerals"], a: 1 },
+        { q: "If an Ohio habitat contains a variety of plants instead of just one, the food web becomes more stable because:", options: ["Animals have alternative choices if one link breaks", "Plants can run away from predators", "Decomposers stop working"], a: 0 },
+        { q: "What is the primary source of all energy powering your Ohio slide food web?", options: ["Nutrients in the dirt", "Solar radiation captured via photosynthesis", "Heat from decomposing leaves"], a: 1 },
+        { q: "A non-biodegradable chemical pesticide is sprayed on an Ohio field. Which organism will suffer the most due to biomagnification?", options: ["Wild Lupine", "Stink Bug", "Red-tailed Hawk (Apex)"], a: 2 },
+        { q: "Feral cats and Red-tailed hawks both preying on Northern Cardinals is an example of:", options: ["Mutualism", "Competition for resources", "Primary decomposition"], a: 1 },
+        { q: "Which organism is responsible for breaking down dead matter and recycling minerals back to the Lupine?", options: ["Primary Producers", "Decomposers/Detritivores", "Apex Predators"], a: 1 },
+        { q: "Why are there rarely more than 4 or 5 levels in any Ohio food chain?", options: ["There isn't enough physical space for more animals", "Energy runs out because 90% is lost at each step", "Animals get too large to be eaten"], a: 1 },
+        { q: "What is a major threat to the Karner Blue Butterfly in Ohio?", options: ["Loss of wild lupine habitat due to development", "An overabundance of primary producers", "Hawks changing to eat plants"], a: 0 },
+        { q: "The Northern Cardinal eats the Stink Bug. The Cardinal is a:", options: ["Herbivore", "Carnivore/Predator", "Producer"], a: 1 },
+        { q: "What would happen if a brand new invasive insect that eats only lupine was introduced to Ohio?", options: ["It would compete directly with the Karner Blue Larva for food", "It would help the hawks grow faster", "It would have zero effect"], a: 0 },
+        { q: "An organism that can eat both berries (producers) and bugs (consumers) is called an:", options: ["Herbivore", "Omnivore", "Carnivore"], a: 1 },
+        { q: "If a top-down cascade occurs because hawks are removed, what happens?", options: ["The producers collapse first", "The prey below them experience population shifts due to less hunting control", "The sun stops providing energy"], a: 1 },
+        { q: "The carrying capacity of Karner Blue butterflies in an Ohio park is determined by:", options: ["The amount of available Wild Lupine food and shelter", "The wing size of the butterflies", "The number of clouds in the sky"], a: 0 },
+        { q: "Which sequence correctly tracks our slide's food chain?", options: ["Lupine ➔ Larva ➔ Stink Bug ➔ Cardinal", "Hawk ➔ Cardinal ➔ Stink Bug ➔ Lupine", "Larva ➔ Lupine ➔ Hawk ➔ Cardinal"], a: 0 },
+        { q: "A living thing that makes its own food using energy from the environment is a:", options: ["Heterotroph", "Autotroph / Producer", "Scavenger"], a: 1 },
+        { q: "An organism that must consume other living things to get energy is a:", options: ["Producer", "Consumer / Heterotroph", "Abiotic factor"], a: 1 },
+        { q: "What role do the green leaves of the Wild Lupine play?", options: ["They absorb oxygen to create soil", "They capture sunlight to convert carbon dioxide into chemical sugars", "They hunt smaller insects"], a: 1 },
+        { q: "If a massive frost kills the Stink Bugs but leaves the Larva alive, what will the Cardinals likely do to survive?", options: ["Switch to alternative insect food sources within the broader web", "Instantly turn into producers", "Hibernate for ten years"], a: 0 },
+        { q: "Ecology is the study of how:", options: ["Rocks are formed over centuries", "Living organisms interact with each other and their non-living environment", "Cell walls function under microscopes"], a: 1 },
+        { q: "The non-living parts of an Ohio habitat (like temperature, water, and soil) are called:", options: ["Biotic factors", "Abiotic factors", "Trophic levels"], a: 1 },
+        { q: "How does high plant biodiversity protect an Ohio woodlot?", options: ["It prevents all winter freezes", "It provides multiple energy pathways so the system doesn't rely on just one plant", "It stops animals from eating plants"], a: 1 }
     ];
 
-    function renderMasteryQuiz() {
-        const container = document.getElementById('quiz-container');
-        container.innerHTML = '';
-        quizQuestions.forEach((item, index) => {
-            let html = `<div style="margin-bottom: 25px;">
-                <p><strong>Q${index+1}: ${item.q}</strong></p>`;
-            item.options.forEach((opt, oIdx) => {
-                html += `<label class="quiz-option" style="display:block;">
-                    <input type="radio" name="q${index}" value="${oIdx}"> ${opt}
-                </label>`;
+    let currentSelectedQuestions = [];
+
+    function compileMasteryExamDeck() {
+        const shuffledDeck = [...masterQuestionPool];
+        for (let i = shuffledDeck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+        }
+        currentSelectedQuestions = shuffledDeck.slice(0, 12); // Draws 12 random questions
+        
+        const uiContainer = document.getElementById('quiz-injector-deck');
+        uiContainer.innerHTML = '';
+        currentSelectedQuestions.forEach((nodeData, idx) => {
+            let formBlock = `<div class="quiz-block"><p class="quiz-question-text">${idx + 1}. ${nodeData.q}</p>`;
+            nodeData.options.forEach((choice, choiceIdx) => {
+                formBlock += `<label class="quiz-radio-option"><input type="radio" name="mastery_q_${idx}" value="${choiceIdx}"> ${choice}</label>`;
             });
-            html += `</div>`;
-            container.innerHTML += html;
+            formBlock += `</div>`;
+            uiContainer.innerHTML += formBlock;
         });
     }
 
-    function gradeQuiz() {
-        let score = 0;
-        quizQuestions.forEach((item, index) => {
-            const selected = document.querySelector(`input[name="q${index}"]:checked`);
-            if(selected && parseInt(selected.value) === item.answer) {
-                score++;
-            }
+    function evaluateMasteryMetrics() {
+        let correct = 0; let unanswered = 0;
+        currentSelectedQuestions.forEach((qData, idx) => {
+            const selected = document.querySelector(`input[name="mastery_q_${idx}"]:checked`);
+            if (!selected) unanswered++;
+            else if (parseInt(selected.value) === qData.a) correct++;
         });
 
-        navigateTo(5);
-        constpct = Math.round((score / quizQuestions.length) * 100);
-        document.getElementById('results-display').innerHTML = `
-            <h3>You scored ${score} out of ${quizQuestions.length} (${constpct}%)</h3>
-            <p>${constpct >= 70 ? "🎉 Excellent! You understand how balance and disruptions govern complex ecological communities in Ohio." : "🧐 Consider reviewing the simulator impacts and try the module again!"}</p>
-        `;
+        if (unanswered > 0) {
+            alert(`Please complete all ${unanswered} remaining questions before submitting.`);
+            return;
+        }
+
+        const pct = Math.round((correct / currentSelectedQuestions.length) * 100);
+        shiftSection(5);
+        document.getElementById('score-metric-output').innerText = `${pct}%`;
+        
+        const textUi = document.getElementById('score-verbal-rating');
+        const critiqueUi = document.getElementById('breakdown-critique-box');
+        
+        if (pct >= 85) {
+            textUi.style.color = "#385723"; textUi.innerText = "🏆 Advanced Ecological Competency Verified!";
+            critiqueUi.innerHTML = `Excellent work! You scored <strong>${correct} / ${currentSelectedQuestions.length}</strong>. You thoroughly understand Ohio ecosystems and how broken links cause ripples through food webs.`;
+        } else if (pct >= 70) {
+            textUi.style.color = "var(--accent-amber)"; textUi.innerText = "👍 Proficient Understanding Achieved.";
+            critiqueUi.innerHTML = `Good job! You scored <strong>${correct} / ${currentSelectedQuestions.length}</strong>. You have a solid grasp of these concepts. Try reviewing the interactive sandbox to see how energy cascades when links break.`;
+        } else {
+            textUi.style.color = "var(--accent-red)"; textUi.innerText = "🧐 Review Recommended.";
+            critiqueUi.innerHTML = `You scored <strong>${correct} / ${currentSelectedQuestions.length}</strong>. Take another look at the learning slides and test the sandbox shapes before trying again!`;
+        }
     }
 
-    function restartApp() {
-        resetSim();
-        document.getElementById('midpoint-feedback').innerHTML = '';
-        document.getElementById('next-to-sim').style.display = 'none';
-        navigateTo(1);
+    function rebootSystemModule() {
+        clearSim();
+        document.getElementById('checkpoint-feedback').style.display = 'none';
+        document.getElementById('gate-to-sim').style.display = 'none';
+        document.getElementById('mastery-quiz-form').reset();
+        activeSlideIndex = 1;
+        document.getElementById('gallery-canvas').src = `slide1.png`;
+        document.getElementById('gallery-idx').innerText = `Slide 1 / 10`;
+        shiftSection(1);
     }
 </script>
 
