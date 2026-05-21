@@ -81,14 +81,15 @@
             margin-bottom: 24px;
             overflow: hidden;
             border: 4px solid #334155;
-            min-height: 480px;
+            min-height: 440px;
         }
-        .gallery-img { max-width: 100%; max-height: 480px; object-fit: contain; }
+        .gallery-img { max-width: 100%; max-height: 440px; object-fit: contain; }
         
         .controls { display: flex; justify-content: center; gap: 16px; align-items: center; margin-top: auto; }
         .btn { padding: 12px 28px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; transition: all 0.2s; font-size: 11pt; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-primary:disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; transform: none; }
         .btn-ghost { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border); }
         .btn-ghost:hover { background: #e2e8f0; }
 
@@ -96,7 +97,7 @@
         .sandbox-wrapper {
             position: relative;
             width: 100%;
-            max-width: 1000px;
+            max-width: 960px;
             margin: 0 auto;
             border: 2px solid var(--border);
             border-radius: var(--radius);
@@ -129,15 +130,25 @@
 
         .log-box {
             background: #1e293b; color: #f8fafc; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 10.5pt;
-            margin-top: 16px; min-height: 80px; border-left: 5px solid var(--primary); line-height: 1.4;
+            margin-top: 14px; min-height: 70px; border-left: 5px solid var(--primary); line-height: 1.4;
         }
 
-        /* Part 3: Thermodynamic Rule Split Layout */
-        .energy-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; margin-top: 12px; }
-        .energy-visual { background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
-        .energy-visual img { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        /* Part 3: Thermodynamic Rule Split Layout (No-Image Full Dark Block variant) */
+        .energy-grid-fluid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: stretch; margin-top: 12px; }
         
-        .tier-deck { display: flex; flex-direction: column; gap: 8px; }
+        .thermo-display-panel {
+            background: #0f172a;
+            color: #f8fafc;
+            border-radius: var(--radius);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+            border: 1px solid #1e293b;
+        }
+        
+        .tier-deck { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
         .tier-card { 
             padding: 14px 18px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
             display: flex; justify-content: space-between; align-items: center; font-weight: 700; transition: all 0.2s; background: #fff; font-size: 11pt;
@@ -145,21 +156,14 @@
         .tier-card:hover { border-color: var(--primary); background: var(--primary-light); }
         .tier-card.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); box-shadow: 0 0 0 1px var(--primary); }
         
-        /* Clean Graphic Retained Retort System */
         .energy-stat-badge {
-            background: var(--primary);
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 9.5pt;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+            background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 9.5pt; font-weight: 800;
         }
 
-        .formula-container { background: #1e293b; color: white; padding: 22px; border-radius: 8px; margin-top: 12px; }
-        .formula-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding: 8px 0; font-family: monospace; font-size: 11pt; }
+        .formula-container-fluid { background: #1e293b; color: white; padding: 24px; border-radius: 8px; }
+        .formula-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #334155; padding: 10px 0; font-family: monospace; font-size: 11.5pt; }
 
-        /* Assessment Quiz Blocks */
+        /* Assessment Quiz Blocks & Inline Nodes */
         .quiz-block { background: #f8fafc; border: 1px solid var(--border); padding: 20px; border-radius: 8px; margin-bottom: 16px; }
         .quiz-question-text { font-weight: 700; font-size: 12pt; margin-bottom: 12px; color: #0f172a; }
         .quiz-option { padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; background: #fff; font-size: 11pt; }
@@ -167,6 +171,10 @@
         .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
         .quiz-option.correct { background: #dcfce7 !important; border-color: #166534 !important; color: #14532d !important; font-weight: 700; }
         .quiz-option.incorrect { background: #fee2e2 !important; border-color: #991b1b !important; color: #7f1d1d !important; }
+
+        .checkpoint-sub-panel {
+            background: #f8fafc; border: 1px solid var(--border); padding: 24px; border-radius: var(--radius); margin-top: 16px;
+        }
 
         .score-box { background: #fff; border: 3px dashed var(--primary); padding: 32px; border-radius: var(--radius); text-align: center; margin-top: 20px; }
         .score-num { font-size: 42pt; font-weight: 900; color: var(--primary-dark); margin: 10px 0; }
@@ -176,39 +184,58 @@
 
     <div class="slide-container active" id="slide-panel-1">
         <h1>Ohio Ecosystem Dynamics</h1>
-        <p class="instructions">Use the control dock below to navigate the core content curriculum slides (Slides 1 through 14).</p>
+        <p class="instructions">Review your lesson materials using the slider below, then answer the verification questions to unlock the canvas simulator.</p>
+        
         <div class="gallery-frame">
             <img src="slide1.png" id="main-gallery" class="gallery-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1280\' height=\'720\' style=\'background:%231e293b;\'><text x=\'50%\' y=\'50%\' fill=\'%23f8fafc\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' text-anchor=\'middle\'>Slide File Loading Context Error: Check filename mappings.</text></svg>'">
         </div>
-        <div class="controls">
+        
+        <div class="controls" style="margin-bottom: 24px;">
             <button class="btn btn-ghost" onclick="changeSlide(-1)">&larr; Previous Slide</button>
             <span id="slide-count-txt" style="font-weight: 700; font-family: monospace; font-size: 12pt;">Slide 1 / 14</span>
             <button class="btn btn-ghost" onclick="changeSlide(1)">Next Slide &rarr;</button>
-            <button class="btn btn-primary" style="margin-left: auto;" onclick="nextPanel(2)">Advance to Checkpoint &rarr;</button>
         </div>
-        <div class="progress-nav"><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
+
+        <div class="checkpoint-sub-panel">
+            <h3 style="color: var(--primary-dark); margin-bottom: 12px;">📝 Slide Deck Verification Checkpoint</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">1. Which of the following organisms represents a Producer in an Ohio woodland environment?</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div class="quiz-option" id="p1q1-o0" onclick="verifyDeckCheck(1, 0, false)">A) Stinkbug</div>
+                        <div class="quiz-option" id="p1q1-o1" onclick="verifyDeckCheck(1, 1, true)">B) Wild Lupine</div>
+                        <div class="quiz-option" id="p1q1-o2" onclick="verifyDeckCheck(1, 2, false)">C) Gray Squirrel</div>
+                    </div>
+                </div>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">2. What unique biological niche do Fungi and Bacteria fulfill within the community matrix?</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div class="quiz-option" id="p1q2-o0" onclick="verifyDeckCheck(2, 0, true)">A) Decomposers</div>
+                        <div class="quiz-option" id="p1q2-o1" onclick="verifyDeckCheck(2, 1, false)">B) Primary Producers</div>
+                        <div class="quiz-option" id="p1q2-o2" onclick="verifyDeckCheck(2, 2, false)">C) Apex Predators</div>
+                    </div>
+                </div>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">3. What does an organism's position on an ecosystem food chain pyramid tier signify?</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <div class="quiz-option" id="p1q3-o0" onclick="verifyDeckCheck(3, 0, false)">A) Its running speed</div>
+                        <div class="quiz-option" id="p1q3-o1" onclick="verifyDeckCheck(3, 1, false)">B) Geological age</div>
+                        <div class="quiz-option" id="p1q3-o2" onclick="verifyDeckCheck(3, 2, true)">C) Its Trophic Level</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls" style="margin-top: 20px;">
+            <button class="btn btn-primary" id="btn-goto-panel2" disabled style="margin-left: auto;" onclick="nextPanel(2)">Unlock Ecosystem Simulator &rarr;</button>
+        </div>
+        <div class="progress-nav"><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
     </div>
 
     <div class="slide-container" id="slide-panel-2">
-        <h2>⚡ Midpoint Checkpoint: Interconnectivity Vectors</h2>
-        <p style="margin-top: 10px;">Review the conceptual layouts outlined across your food web presentation slides. What is the explicit real-world definition of the arrows printed inside an ecosystem mapping schematic?</p>
-        
-        <div id="quiz-options-mid" style="margin-top: 20px;">
-            <div class="quiz-option" onclick="checkMid(this, false)">A) The physiological migration flight trajectories of local avian classes over seasonal intervals.</div>
-            <div class="quiz-option" onclick="checkMid(this, true)">B) The direction of chemical biomass energy transfer running from the eaten organism to the consumer.</div>
-            <div class="quiz-option" onclick="checkMid(this, false)">C) The comparative metabolic speed ratios at which secondary predators chase target prey items.</div>
-        </div>
-        <div id="mid-feedback" style="margin-top: 20px; font-weight: 700; font-size: 13pt;"></div>
-        
-        <div class="controls" style="margin-top: auto;">
-            <button class="btn btn-primary" id="btn-to-3" style="display: none; margin-left: auto;" onclick="nextPanel(3)">Unlock Ecosystem Simulator &rarr;</button>
-        </div>
-        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
-    </div>
-
-    <div class="slide-container" id="slide-panel-3">
         <h2>🕸️ Structural Trophic Sandbox (Web Fractures)</h2>
-        <p class="instructions">Click directly on any high-visibility dashed box to remove that organism from the web. Watch the top-down or bottom-up domino effects update instantly.</p>
+        <p class="instructions">Click on any highlighted animal box to drop them from the food web. Check the system log, then answer the web dynamics questions.</p>
         
         <div class="sandbox-wrapper">
             <img src="slide4.png" alt="Ecosystem Canvas Layout" class="sandbox-bg" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1000\' height=\'560\' style=\'background:%23cbd5e1;\'><text x=\'50%\' y=\'50%\' fill=\'%231e293b\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'16\' text-anchor=\'middle\'>[Sandbox Background: Please confirm slide4.png is uploaded to your repository]</text></svg>'">
@@ -236,20 +263,56 @@
 
         <div class="log-box" id="log">SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.</div>
         
+        <div class="checkpoint-sub-panel">
+            <h3 style="color: var(--primary-dark); margin-bottom: 12px;">📝 Food Web Cascade Checkpoint</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">1. If a disease removes Wild Lupine, what type of ecological event occurs to the Karner Blue Caterpillar population?</p>
+                    <div class="quiz-option" id="p2q1-o0" onclick="verifyWebCheck(1, 0, true)">A) Bottom-Up Trophic Starvation</div>
+                    <div class="quiz-option" id="p2q1-o1" onclick="verifyWebCheck(1, 1, false)">B) Top-Down Predation Cascade</div>
+                </div>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">2. Removing apex predators (Hawk/Fox) triggers overpopulation among primary consumers. This confirms that webs are:</p>
+                    <div class="quiz-option" id="p2q2-o0" onclick="verifyWebCheck(2, 0, false)">A) Completely independent paths</div>
+                    <div class="quiz-option" id="p2q2-o1" onclick="verifyWebCheck(2, 1, true)">B) Interdependent biological networks</div>
+                </div>
+            </div>
+        </div>
+
         <div class="controls">
             <button class="btn btn-ghost" onclick="resetSim()">Reset System Matrix</button>
-            <button class="btn btn-primary" style="margin-left: auto;" onclick="nextPanel(4)">Advance to Energy Calculator &rarr;</button>
+            <button class="btn btn-primary" id="btn-goto-panel3" disabled style="margin-left: auto;" onclick="nextPanel(3)">Advance to Energy Calculator &rarr;</button>
         </div>
-        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div><div class="nav-bar"></div></div>
     </div>
 
-    <div class="slide-container" id="slide-panel-4">
+    <div class="slide-container" id="slide-panel-3">
         <h2>🔺 Thermodynamic Energy & The 10% Rule Calculator</h2>
-        <p class="instructions">Select different trophic levels below to test the active chemical energy transfer calculations across your ecosystem pyramid ecosystem.</p>
+        <p class="instructions">Select different trophic levels on the right to process live thermodynamic models of organic mass assimilation.</p>
         
-        <div class="energy-grid">
-            <div class="energy-visual">
-                <img src="11.png" id="energy-img" alt="Thermodynamic Matrix Visualization" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'400\' style=\'background:%23e2e8f0;\'><text x=\'50%\' y=\'50%\' fill=\'%23475569\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'14\' text-anchor=\'middle\'>Pyramid Overview Slide Missing</text></svg>'">
+        <div class="energy-grid-fluid">
+            <div class="thermo-display-panel">
+                <div class="formula-container-fluid">
+                    <p style="text-transform: uppercase; font-size: 9pt; color: #38bdf8; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 4px;">Thermodynamic Tracking System</p>
+                    <h3 id="energy-label" style="font-size: 18pt; margin-bottom: 16px; color: #fff;">Active Net Yield (Trophic Level 1):</h3>
+                    
+                    <div id="math-formula-slot" style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 6px; border: 1px solid #334155; margin-bottom: 20px; text-align: center;">
+                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 24pt; color: #4ade80;">
+                            <mn>10,000</mn>
+                            <mtext>&#160;kcal</mtext>
+                        </math>
+                    </div>
+                    
+                    <div class="formula-row">
+                        <span style="color: #f87171; font-weight: 700;">🔥 Dissipated Metabolic Heat & Waste Loss (90%):</span>
+                        <span id="loss-label" style="color: #f87171; font-weight: 800;">0 kcal</span>
+                    </div>
+                    
+                    <div class="formula-row" style="border-bottom: none; padding-top: 14px;">
+                        <span style="color: #38bdf8; font-weight: 700;">🔄 Real-Time Math Equation Execution:</span>
+                        <span id="equation-expression-label" style="color: #38bdf8; font-weight: 800;">Baseline Input Pool</span>
+                    </div>
+                </div>
             </div>
             
             <div class="tier-deck">
@@ -273,38 +336,36 @@
                     <span>🦅 Trophic Level 5: Apex Predators</span>
                     <span class="energy-stat-badge">0.01% Retained</span>
                 </div>
+            </div>
+        </div>
 
-                <div class="formula-container">
-                    <p id="energy-label" style="font-weight: 700; margin-bottom: 8px; color: #94a3b8;">Active Energy Yield Available:</p>
-                    <div id="math-formula-slot" style="margin: 12px 0;">
-                        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-                            <mn>10,000</mn>
-                            <mtext>&#160;kcal</mtext>
-                        </math>
-                    </div>
-                    <div class="formula-row" style="border-top: 1px solid #334155; padding-top: 10px; margin-top: 10px;">
-                        <span style="color: #f87171;">🔥 Dissipated Metabolic Heat Loss (90%):</span>
-                        <span id="loss-label" style="color: #f87171; font-weight: 700;">0 kcal</span>
-                    </div>
-                    <div class="formula-row" style="border-bottom:none; padding-top: 4px;">
-                        <span style="color: #38bdf8;">🔄 Real-Time Math Equation Execution:</span>
-                        <span id="equation-expression-label" style="color: #38bdf8; font-weight: 700;">Base Pool</span>
-                    </div>
+        <div class="checkpoint-sub-panel" style="margin-top: 24px;">
+            <h3 style="color: var(--primary-dark); margin-bottom: 12px;">📝 Energy Transfer Calculations Checkpoint</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">1. If Level 1 contains 10,000 kcal of net energy, how much remains usable inside Level 3?</p>
+                    <div class="quiz-option" id="p3q1-o0" onclick="verifyEnergyCheck(1, 0, false)">A) 1,000 kcal</div>
+                    <div class="quiz-option" id="p3q1-o1" onclick="verifyEnergyCheck(1, 1, true)">B) 100 kcal</div>
+                </div>
+                <div>
+                    <p style="font-weight: 700; margin-bottom: 6px;">2. What metabolic process accounts for the 90% loss of energy between levels?</p>
+                    <div class="quiz-option" id="p3q2-o0" onclick="verifyEnergyCheck(2, 0, true)">A) Cellular respiration and heat loss</div>
+                    <div class="quiz-option" id="p3q2-o1" onclick="verifyEnergyCheck(2, 1, false)">B) Photosynthetic accumulation</div>
                 </div>
             </div>
         </div>
         
         <div class="controls" style="margin-top: auto;">
-            <button class="btn btn-primary" style="margin-left: auto;" onclick="nextPanel(5)">Generate Cumulative Final Exam &rarr;</button>
+            <button class="btn btn-primary" id="btn-goto-panel4" disabled style="margin-left: auto;" onclick="nextPanel(4)">Generate Final Exam &rarr;</button>
         </div>
-        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div></div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div><div class="nav-bar"></div></div>
     </div>
 
-    <div class="slide-container" id="slide-panel-5">
+    <div class="slide-container" id="slide-panel-4">
         <h2>🎓 Cumulative Content Mastery Assessment</h2>
-        <p class="instructions">Complete the following questions compiled from the course biology database.</p>
+        <p class="instructions">Complete the following questions compiled from your ecosystem course database.</p>
         
-        <div id="quiz-mastery-deck" style="overflow-y: auto; max-height: 480px; padding-right: 10px; margin-bottom: 20px;"></div>
+        <div id="quiz-mastery-deck" style="overflow-y: auto; max-height: 440px; padding-right: 10px; margin-bottom: 20px;"></div>
         
         <div id="score-summary-zone" style="display: none;" class="score-box">
             <p style="text-transform: uppercase; font-weight: 800; color: var(--text-muted); letter-spacing: 1px;">Evaluation Metrics Result</p>
@@ -316,14 +377,19 @@
             <button class="btn btn-ghost" id="btn-reboot" style="display: none;" onclick="location.reload()">Restart Learning Module</button>
             <button class="btn btn-primary" id="btn-submit-quiz" style="margin-left: auto;" onclick="gradeQuiz()">Submit Exam Papers</button>
         </div>
-        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div></div>
+        <div class="progress-nav"><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar completed"></div><div class="nav-bar active"></div></div>
     </div>
 
     <script>
         let currentSlide = 1;
         const totalSlides = 14;
 
-        // Slide Gallery Controller Engine
+        // Validation Tracking Variables
+        let deckScores = [false, false, false];
+        let webScores = [false, false];
+        let energyScores = [false, false];
+
+        // Slide Gallery Navigator
         function changeSlide(dir) {
             currentSlide += dir;
             if (currentSlide < 1) currentSlide = 1;
@@ -342,26 +408,79 @@
         function nextPanel(id) {
             document.querySelectorAll('.slide-container').forEach(s => s.classList.remove('active'));
             document.getElementById(`slide-panel-${id}`).classList.add('active');
-            if (id === 5) loadQuiz();
+            if (id === 4) loadQuiz();
         }
 
-        // Gateway Mid-Checkpoint Verification
-        function checkMid(el, correct) {
-            const feed = document.getElementById('mid-feedback');
-            el.parentElement.querySelectorAll('.quiz-option').forEach(o => o.className = 'quiz-option');
-            if (correct) {
-                el.classList.add('correct');
-                feed.style.color = "var(--primary-dark)";
-                feed.innerText = "🎯 Correct! Energy flows systematically from the organism consumed to the organism digesting it.";
-                document.getElementById('btn-to-3').style.display = "block";
+        // Section 1 Inline Check validation
+        function verifyDeckCheck(qNum, optIdx, isCorrect) {
+            const rowOpts = (qNum === 1) ? [0,1,2] : (qNum === 2) ? [0,1,2] : [0,1,2];
+            rowOpts.forEach(idx => {
+                document.getElementById(`p1q${qNum}-o${idx}`).className = 'quiz-option';
+            });
+            
+            const selectedEl = document.getElementById(`p1q${qNum}-o${optIdx}`);
+            if(isCorrect) {
+                selectedEl.classList.add('correct');
+                deckScores[qNum-1] = true;
             } else {
-                el.classList.add('incorrect');
-                feed.style.color = "var(--accent-red)";
-                feed.innerText = "❌ Incorrect. Remember the rule: the arrow points toward the consumer who receives the energy.";
+                selectedEl.classList.add('incorrect');
+                deckScores[qNum-1] = false;
+            }
+            
+            if(deckScores.every(val => val === true)) {
+                document.getElementById('btn-goto-panel2').removeAttribute('disabled');
+            } else {
+                document.getElementById('btn-goto-panel2').setAttribute('disabled', 'true');
             }
         }
 
-        // Structural Cascade Engineering Logic Matrix
+        // Section 2 Inline Check validation
+        function verifyWebCheck(qNum, optIdx, isCorrect) {
+            const rowOpts = [0, 1];
+            rowOpts.forEach(idx => {
+                document.getElementById(`p2q${qNum}-o${idx}`).className = 'quiz-option';
+            });
+            
+            const selectedEl = document.getElementById(`p2q${qNum}-o${optIdx}`);
+            if(isCorrect) {
+                selectedEl.classList.add('correct');
+                webScores[qNum-1] = true;
+            } else {
+                selectedEl.classList.add('incorrect');
+                webScores[qNum-1] = false;
+            }
+            
+            if(webScores.every(val => val === true)) {
+                document.getElementById('btn-goto-panel3').removeAttribute('disabled');
+            } else {
+                document.getElementById('btn-goto-panel3').setAttribute('disabled', 'true');
+            }
+        }
+
+        // Section 3 Inline Check validation
+        function verifyEnergyCheck(qNum, optIdx, isCorrect) {
+            const rowOpts = [0, 1];
+            rowOpts.forEach(idx => {
+                document.getElementById(`p3q${qNum}-o${idx}`).className = 'quiz-option';
+            });
+            
+            const selectedEl = document.getElementById(`p3q${qNum}-o${optIdx}`);
+            if(isCorrect) {
+                selectedEl.classList.add('correct');
+                energyScores[qNum-1] = true;
+            } else {
+                selectedEl.classList.add('incorrect');
+                energyScores[qNum-1] = false;
+            }
+            
+            if(energyScores.every(val => val === true)) {
+                document.getElementById('btn-goto-panel4').removeAttribute('disabled');
+            } else {
+                document.getElementById('btn-goto-panel4').setAttribute('disabled', 'true');
+            }
+        }
+
+        // Structural Cascade Logic Matrix
         function sim(type, element) {
             resetSim();
             element.classList.add('dead');
@@ -406,12 +525,11 @@
             document.getElementById('log').innerHTML = "SYSTEM STATUS SUMMARY: Baseline equilibrium verified. Select any highlighted ecological organism box above to initiate a structural system fracture experiment.";
         }
 
-        // Thermodynamic Calculator (slide references eliminated from interactive card nodes)
+        // Thermodynamic Metric State Processing 
         function calc(level) {
             document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
             document.getElementById(`tc-${level}`).classList.add('active');
             
-            const pyramidImg = document.getElementById('energy-img');
             const label = document.getElementById('energy-label');
             const mathFormulaSlot = document.getElementById('math-formula-slot');
             const loss = document.getElementById('loss-label');
@@ -419,23 +537,18 @@
 
             const values = [10000, 1000, 100, 10, 1];
             const mathEquations = [
-                "Baseline Input Pool",
-                "10,000 kcal × 0.10",
-                "1,000 kcal × 0.10",
-                "100 kcal × 0.10",
-                "10 kcal × 0.10"
+                "Baseline Producer Input Pool",
+                "10,000 kcal Net Product × 0.10",
+                "1,000 kcal Net Product × 0.10",
+                "100 kcal Net Product × 0.10",
+                "10 kcal Net Product × 0.10"
             ];
             
-            if (level === 1) pyramidImg.src = "12.png";
-            else if (level === 2) pyramidImg.src = "13.png";
-            else if (level === 5) pyramidImg.src = "14.png";
-            else pyramidImg.src = "11.png";
-
             label.innerText = `Active Net Yield (Trophic Level ${level}):`;
             equationSlot.innerText = mathEquations[level - 1];
             
             mathFormulaSlot.innerHTML = `
-                <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" style="font-size: 24pt; color: #4ade80;">
                     <mn>${values[level - 1].toLocaleString()}</mn>
                     <mtext>&#160;kcal</mtext>
                 </math>
@@ -445,7 +558,7 @@
             loss.innerText = `${calculatedLoss.toLocaleString()} kcal`;
         }
 
-        // Assessment Bank
+        // Assessment Database
         const questionPool = [
             { q: "If Wild Lupine (Producer) is fully cleared from a section, why does the Karner Blue Caterpillar population crash?", a: 1, o: ["It learns to hunt high-level hawk lines", "It is a specialist herbivore that depends entirely on lupine for nutrition", "It mutates into a decomposer matrix"] },
             { q: "According to thermodynamic principles, what percent of net biomass energy is LOST at each consecutive tier transfer?", a: 0, o: ["90%", "10%", "50%"] },
