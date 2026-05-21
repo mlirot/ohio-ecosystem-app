@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohio Ecosystems: Chains, Webs & Collapse</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --primary: #2e7d32;
+            --primary-hover: #1b5e20;
+            --accent-red: #c62828;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 20%;
+            background-color: var(--primary);
+            transition: width 0.4s ease;
+        }
+
+        .app-section {
+            display: none;
+        }
+
+        .app-section.active {
+            display: block;
+        }
+
+        /* Canva Placeholder */
+        .canva-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.2500%;
+            box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16);
+            margin-top: 1.6em;
+            margin-bottom: 0.9em;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #e5e5e5;
+        }
+
+        .canva-placeholder-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-Concentrate, -50%);
+            text-align: center;
+            width: 100%;
+            color: #666;
+        }
+
+        /* Eco-Simulator Layout */
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .organism-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .organism-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .organism-card.dead {
+            background-color: #ffebee;
+            border-color: var(--accent-red);
+            opacity: 0.6;
+        }
+
+        .organism-card.affected {
+            background-color: #fff8e1;
+            border-color: #ffb300;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .producer { background: #e8f5e9; color: #2e7d32; }
+        .consumer { background: #e3f2fd; color: #1565c0; }
+        .apex { background: #ede7f6; color: #5e35b1; }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover { background-color: var(--primary-hover); }
+        
+        .quiz-option {
+            display: block;
+            background: #f8f9fa;
+            border: 1px solid #ced4da;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quiz-option:hover { background: #e9ecef; }
+        .correct { background: #c8e6c9 !important; border-color: #81c784; }
+        .incorrect { background: #ffcdd2 !important; border-color: #e57373; }
+        
+        #log-box {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            margin-top: 15px;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+
+    <div id="step-1" class="app-section active">
+        <h2>🔬 Lesson: Ohio Ecosystem Dynamics</h2>
+        <p>Review the presentation below covering trophic levels, energy flow, and food webs within local Ohio biomes.</p>
+        
+        <div class="canva-container">
+            <iframe allowfullscreen="allowfullscreen" scrolling="no" class="canva-frame" style="position:absolute; width:100%; height:100%; top:0; left:0; border:none; padding:0;margin:0;"
+                src="https://www.canva.com/design/DAHKIuOukoA/HpfxDa9XxnBfgMfjB4V6_A/view">
+            </iframe>
+        </div>
+
+        <button class="btn" onclick="navigateTo(2)">Take Knowledge Check ➔</button>
+    </div>
+
+    <div id="step-2" class="app-section">
+        <h2>⚡ Concept Check: Energy Flow</h2>
+        <p><strong>Question:</strong> In an Ohio deciduous forest food web, arrows point from a primary producer (like a White Oak Tree) to a primary consumer (like a White-tailed Deer). What does this arrow strictly track?</p>
+        
+        <div class="quiz-option" onclick="checkMidpoint(this, false)">A) The physical movement and migration patterns of organisms.</div>
+        <div class="quiz-option" onclick="checkMidpoint(this, true)">B) The directional transfer of chemical energy and biomass up trophic levels.</div>
+        <div class="quiz-option" onclick="checkMidpoint(this, false)">C) The predatory dominance of one species over another.</div>
+        
+        <div id="midpoint-feedback" style="margin-top:15px; font-weight:bold;"></div>
+        <button class="btn" id="next-to-sim" style="display:none;" onclick="navigateTo(3)">Advance to Ecosystem Simulator ➔</button>
+    </div>
+
+    <div id="step-3" class="app-section">
+        <h2>🌲 Interactive Sandbox: Broken Links</h2>
+        <p>Click on an Ohio woodland organism to simulate a <strong>trophic cascade</strong> or habitat destruction event. See how the ecosystem balance shifts.</p>
+        
+        <div class="simulator-grid">
+            <div class="organism-card" id="card-oak" onclick="simulateCollapse('oak')">
+                <h3>White Oak</h3>
+                <span class="badge producer">Producer</span>
+            </div>
+            <div class="organism-card" id="card-mouse" onclick="simulateCollapse('mouse')">
+                <h3>Wood Mouse</h3>
+                <span class="badge consumer">Primary Consumer</span>
+            </div>
+            <div class="organism-card" id="card-owl" onclick="simulateCollapse('owl')">
+                <h3>Barred Owl</h3>
+                <span class="badge consumer">Secondary Consumer</span>
+            </div>
+            <div class="organism-card" id="card-coyote" onclick="simulateCollapse('coyote')">
+                <h3>Coyote</h3>
+                <span class="badge apex">Apex Predator</span>
+            </div>
+        </div>
+
+        <h4>Ecosystem Status Log:</h4>
+        <div id="log-box">Ecosystem is currently balanced. Click an organism above to remove it.</div>
+
+        <button class="btn" style="background:#6c757d;" onclick="resetSim()">Reset Ecosystem</button>
+        <button class="btn" onclick="navigateTo(4)">Proceed to Final Mastery Quiz ➔</button>
+    </div>
+
+    <div id="step-4" class="app-section">
+        <h2>🎓 Final Mastery Exam</h2>
+        <div id="quiz-container">
+            </div>
+        <button class="btn" id="submit-quiz-btn" onclick="gradeQuiz()">Grade Quiz</button>
+    </div>
+
+    <div id="step-5" class="app-section">
+        <h2>📊 Performance Analysis</h2>
+        <div id="results-display"></div>
+        <button class="btn" onclick="restartApp()">Restart Module</button>
+    </div>
+</div>
+
+<script>
+    // App Navigation Logic
+    function navigateTo(step) {
+        document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(`step-${step}`).classList.add('active');
+        
+        // Progress bar conversion
+        const totalSteps = 5;
+        document.getElementById('progress').style.width = `${(step / totalSteps) * 100}%`;
+
+        if(step === 4) { renderMasteryQuiz(); }
+    }
+
+    // Midpoint Check Engine
+    function checkMidpoint(element, isCorrect) {
+        const feedback = document.getElementById('midpoint-feedback');
+        if(isCorrect) {
+            element.classList.add('correct');
+            feedback.innerHTML = "🎯 Correct! Energy flows from the eaten to the eater.";
+            feedback.style.color = "var(--primary)";
+            document.getElementById('next-to-sim').style.display = 'inline-block';
+        } else {
+            element.classList.add('incorrect');
+            feedback.innerHTML = "❌ Try again. Think about what organisms pass along when consumed.";
+            feedback.style.color = "var(--accent-red)";
+        }
+    }
+
+    // Simulator Core Engine
+    function simulateCollapse(target) {
+        resetSim();
+        const oak = document.getElementById('card-oak');
+        const mouse = document.getElementById('card-mouse');
+        const owl = document.getElementById('card-owl');
+        const coyote = document.getElementById('card-coyote');
+        const log = document.getElementById('log-box');
+
+        if(target === 'oak') {
+            oak.classList.add('dead');
+            mouse.classList.add('affected');
+            owl.classList.add('affected');
+            coyote.classList.add('affected');
+            log.innerHTML = "⚠️ BOTTOM-UP COLLAPSE: Removing the primary producer cuts off all biomass creation. Trophic levels 2, 3, and 4 face starvation.";
+        } else if(target === 'coyote') {
+            coyote.classList.add('dead');
+            mouse.classList.add('affected');
+            oak.classList.add('affected');
+            log.innerHTML = "⚠️ TOP-DOWN TROPHIC CASCADE: Removing the apex predator leaves primary consumers unchecked. Mouse populations surge, overgrazing the White Oak saplings.";
+        } else if(target === 'mouse') {
+            mouse.classList.add('dead');
+            owl.classList.add('affected');
+            coyote.classList.add('affected');
+            log.innerHTML = "⚠️ INTERMEDIATE LINK BROKEN: Secondary predators lose their direct energy line. Predators must switch alternative prey or decline.";
+        } else if(target === 'owl') {
+            owl.classList.add('dead');
+            log.innerHTML = "⚠️ Apex predators/omnivores scale back, but alternative pathways in a complex food web minimize full collapse.";
+        }
+    }
+
+    function resetSim() {
+        document.querySelectorAll('.organism-card').forEach(c => c.className = 'organism-card');
+        document.getElementById('log-box').innerHTML = "Ecosystem is currently balanced. Click an organism above to remove it.";
+    }
+
+    // Mastery Quiz Array Data (9th/10th Grade Standard)
+    const quizQuestions = [
+        {
+            q: "An invasive species like the Zebra Mussel is introduced into Lake Erie. It filters out almost all phytoplankton (microscopic algae). What is the cascading impact on the food web?",
+            options: [
+                "It benefits top-tier predators by making the water clearer.",
+                "It causes a bottom-up resource collapse, starving secondary consumers like Yellow Perch.",
+                "It has zero net effect because secondary consumers adapt to eat mussels immediately."
+            ],
+            answer: 1
+        },
+        {
+            q: "If a blight diseases eliminates 90% of the primary producers in an Ohio marshland, what happens to the total available energy across subsequent trophic levels?",
+            options: [
+                "The energy at higher levels scales upward to compensate.",
+                "Available energy collapses significantly across all higher levels because of the 10% rule of energy transfer.",
+                "Decomposers become the new primary producers."
+            ],
+            answer: 1
+        }
+    ];
+
+    function renderMasteryQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        quizQuestions.forEach((item, index) => {
+            let html = `<div style="margin-bottom: 25px;">
+                <p><strong>Q${index+1}: ${item.q}</strong></p>`;
+            item.options.forEach((opt, oIdx) => {
+                html += `<label class="quiz-option" style="display:block;">
+                    <input type="radio" name="q${index}" value="${oIdx}"> ${opt}
+                </label>`;
+            });
+            html += `</div>`;
+            container.innerHTML += html;
+        });
+    }
+
+    function gradeQuiz() {
+        let score = 0;
+        quizQuestions.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            if(selected && parseInt(selected.value) === item.answer) {
+                score++;
+            }
+        });
+
+        navigateTo(5);
+        constpct = Math.round((score / quizQuestions.length) * 100);
+        document.getElementById('results-display').innerHTML = `
+            <h3>You scored ${score} out of ${quizQuestions.length} (${constpct}%)</h3>
+            <p>${constpct >= 70 ? "🎉 Excellent! You understand how balance and disruptions govern complex ecological communities in Ohio." : "🧐 Consider reviewing the simulator impacts and try the module again!"}</p>
+        `;
+    }
+
+    function restartApp() {
+        resetSim();
+        document.getElementById('midpoint-feedback').innerHTML = '';
+        document.getElementById('next-to-sim').style.display = 'none';
+        navigateTo(1);
+    }
+</script>
+
+</body>
+</html>
